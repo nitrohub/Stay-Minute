@@ -1,0 +1,34 @@
+<%- include ('partials/header.ejs') %>
+        <h1>Rooms!</h1>
+         <form method = "POST" action= "/room">
+          <input type = "text"   name = "type" placeholder = "Type"> 
+          <input type = "number" name = "beds" placeholder = "Beds"> 
+          <input type = "number" name = "occupancy" placeholder = "occupancy">
+          <input type = "number" name = "lower" placeholder="lower Range">
+          <input type = "number" name = "upper" placeholder= "upper Range">
+          <input type = "text"   name ="from"  placeholder= "from : yyyy-mm-dd">
+          <input type = "text"   name = "to" placeholder = "to : yyyy-mm-dd">
+          <input type = "number" name = "no_of_rooms" placeholder = " Enter the Number of Rooms"> 
+          <button> Submit</button>
+         </form>
+          
+
+          <% comment.forEach(function(comment){ %>  <!-- showing comments -->
+          <div>
+                <h3><%= comment.Author %></h3> 
+          </div>
+          <div>
+                <p><%= comment.Comment %></p>        
+          </div>
+          <div>
+                <a href="/comment/<%=comment._id%>/edit">Edit?</a>
+          </div>
+          <div>
+                  <form action = "/comment/<%=comment._id%>?_method=DELETE" method = "POST">
+                   <input type="submit" value="Delete">
+                  </form>
+          </div>
+          <%  }); %>
+         
+         <a href="./comment">Comment!</a>
+<%-include ('partials/footer.ejs') %>

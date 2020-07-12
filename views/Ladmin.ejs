@@ -1,0 +1,13 @@
+<%- include ('partials/header.ejs') %>
+<div>
+    <a href = "/Hlogout">Logout?</a>
+</div>
+<h1>Hotel Login!</h1>
+
+<form action="/Ladmin" method="POST">
+    <input type="text" name="username" placeholder = "username">
+    <input type = "password" name ="password" placeholder = "password">
+    <input type = "submit" value = "submit">
+</form>
+
+<%- include ('partials/footer.ejs') %>

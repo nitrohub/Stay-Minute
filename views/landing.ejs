@@ -1,0 +1,15 @@
+<%- include ('partials/header.ejs') %>
+      <h1>StayMinute</h1>
+      <nav>
+          <ul>
+              <li><a href="/login">Login</a></li>
+              <li><a href="/signup">Signup</a></li>
+              <li> <a href="/logout">Logout</a></li>
+              <li><a href = "/Radmin">Add Hotel?</a></li>
+          </ul>
+      </nav>
+      <form action="/search" method = "POST">
+        <input type = "text" placeholder="Location">
+        <input type = "submit" value="Search">
+      </form>
+<%- include ('partials/footer.ejs') %>

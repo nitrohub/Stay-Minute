@@ -1,0 +1,17 @@
+<%- include ('partials/header.ejs') %>
+<li><a href="/login">Login</a></li>
+<li><a href="/signup">Signup</a></li>
+<li> <a href="/logout">Logout</a></li>        
+<h1> Signup!</h1>
+
+        <form method="POST" action="/signup">
+            <input type = "text" name = "name" placeholder = "Name">
+            <input type = "number" name = "age" placeholder = "Age">
+            <input type = "text" name = "contact" placeholder = "contact details">
+            <input type = "text" name="username" placeholder="Email">
+            <input type = "password" name="password" placeholder = "Password">
+            <input type = "submit" value = "signup">
+        </form>
+<%- include ('partials/footer.ejs') %>
+
+

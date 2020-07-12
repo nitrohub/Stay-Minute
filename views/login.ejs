@@ -1,0 +1,10 @@
+<%- include ('partials/header.ejs') %>
+<li><a href="/login">Login</a></li>
+<li><a href="/signup">Signup</a></li>
+<li> <a href="/logout">Logout</a></li>
+        <form method = "POST" action="/login">
+                    <input type="text"name="username" placeholder="username">
+                    <input type="password" name="password" placeholder ="password">            
+                    <input type="submit" value= "Login">
+        </form>
+<%- include ('partials/footer.ejs') %>
