@@ -18,14 +18,14 @@ var hotelSchema   = new mongoose.Schema({
    cost_of_superDeluxe_room :String,
    room           : [
       {
-         type     : mongoose.Schema.Types.ObjectId,
-         reference   : "room"  
+         type: mongoose.Schema.Types.ObjectId,
+         ref   : "room"  
       }
    ],
    comment        : [
       {
          type        : mongoose.Schema.Types.ObjectId,
-         reference   : "comment"  //name of the model
+         ref   : "comment"  //name of the model
       }
    ]
 });

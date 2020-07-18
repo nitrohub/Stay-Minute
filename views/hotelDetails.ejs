@@ -7,11 +7,12 @@
     <p>Simple Room Cost= <%=hotel.cost_of_simple_room%></p>
     <p>Deluxe Room Cost= <%=hotel.cost_of_deluxe_room%></p>
     <p>Super Deluxe Room Cost= <%=hotel.cost_of_superDeluxe_room%></p>
-    <form action="" method="POST">
-        <table>
+    <center>
+    <form action="/checkAvailability/<%=hotel._id%>" method="POST">
+        <table border="1px">
             <tr>
                 <th>Room Type</th>
-                <td><input type="text" name="RoomType" list="items">
+                <td><input type="text" name="room[roomType]" list="items">
                     <datalist id="items">
                         <option value="Simple"></option>
                         <option value="Deluxe"></option>
@@ -21,10 +22,47 @@
             </tr>
             <tr>
                 <th>Number of Rooms</th>
-                <td><input type="number" name="No_of_rooms"></td>
-            </tr>            
+                <td><input type="number" name="room[No_of_rooms]" id="no"></td>
+            </tr>         
+            <tr>
+                <th>From</th>
+                <td><input type="text" name="room[From]" placeholder="Format : yyyy-mm-dd-hh:mm"></td>
+            </tr>  
+            <tr>
+                <th>To</th>
+                <td><input type="text" name="room[To]" placeholder="Format : yyyy-mm-dd-hh:mm"></td>
+            </tr> 
+            <tr>
+                <td><button onclick="Amount()">Total</button></td>
+                <td><span id="app"></span></td>
+            </tr>
+        <tr>
+            <td><input type="submit" value="Check Availability"></td>
+            <td><input type="reset" value="reset"></td>
+        </tr>
         </table>
+    </center>
     </form>
+
 </div>
 
+
+
 <%-include('partials/footer.ejs') %>
+<script>
+    function Amount(){
+    var nos = document.getElementById("no").value;
+    var types = document.getElementsByName("room[roomType]")[0].value;
+    var amount="";
+    if(types.localeCompare("Simple")==0){
+        amount = parseInt(nos) * parseInt("<%=hotel.cost_of_simple_room%>");
+    }else if(types.localeCompare("Deluxe")==0){
+        amount = parseInt(nos) * parseInt("<%=hotel.cost_of_deluxe_room%>");
+    }else if(types.localeCompare("Super Deluxe")==0){
+        amount = parseInt(nos) * parseInt("<%=hotel.cost_of_superDeluxe_room%>");
+    }
+    
+        document.getElementById("app").innerHTML = amount;
+}
+
+</script>

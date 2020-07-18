@@ -1,6 +1,8 @@
 //Promise - done 
 //Async await
 
+
+
 //filtering according to time and date using mongodb - done
 //Implement The booking on single room using JavaScript - done
 //Using the mongoDb if possible and atlast - done
@@ -138,7 +140,7 @@ passport.deserializeUser(function(id, done) {
  });
  
 
-RoomTestingData();
+// RoomTestingData();
 
 app.get("/",function(req,res){
    res.render("landing");
@@ -302,7 +304,7 @@ app.post("/Radmin",function(req,res){
    var description   = req.body.description;
    var cost_of_simple_room = req.body.cost_of_simple_room;
    var cost_of_deluxe_room = req.body.cost_of_deluxe_room;
-   var cost_of_super_deluxe_room = req.body.cost_of_superDeluxe_room;
+   var cost_of_superDeluxe_room = req.body.cost_of_superDeluxe_room;
    var newAdmin = new admin({
    name : name,
    owner : owner,
@@ -316,7 +318,7 @@ app.post("/Radmin",function(req,res){
    description :description,
    cost_of_simple_room : cost_of_simple_room,
    cost_of_deluxe_room : cost_of_deluxe_room,
-   cost_of_super_deluxe_room : cost_of_super_deluxe_room
+   cost_of_superDeluxe_room : cost_of_superDeluxe_room
    });
 
    no_of_rooms_global_var=no_of_rooms;
@@ -339,11 +341,11 @@ function failure(){
 
 app.post("/addroom/:id",function(req,res){
    for(var i=0;i<no_of_rooms_global_var;i++){
-    var number = req.body.room["number".concat(i.toString())];
-    var type   = req.body.room["type".concat(i.toString())];
-    var beds   = req.body.room["beds".concat(i.toString())];
-    var occupancy= req.body.room["occupancy".concat(i.toString())];
-    var cost     = req.body.room["cost".concat(i.toString())];
+    var number    = req.body.room["number".concat(i.toString())];
+    var type      = req.body.room["type".concat(i.toString())];
+    var beds      = req.body.room["beds".concat(i.toString())];
+    var occupancy = req.body.room["occupancy".concat(i.toString())];
+    var cost      = req.body.room["cost".concat(i.toString())];
     
    //  console.log("This is the admin ka id:",req.params.id);
 
@@ -353,11 +355,11 @@ app.post("/addroom/:id",function(req,res){
           res.redirect("/");
        }else{
           var newRoom = new room({
-             number : number,
-             type   : type,
-             beds   : beds,
-             occupancy : occupancy,
-             cost   : cost
+             roomNo     : number,
+             roomType   : type,
+             beds       : beds,
+             occupancy  : occupancy,
+             cost       : cost
           });
           room.create(newRoom,function(err,newRoom){
              if(err){
@@ -425,7 +427,7 @@ app.get("/Oadmin",function(req,res){
 });
 
 //----------------------------------------------------------------------------------------------------------------------------
-//Searching Hotels and Sshowing Details
+//Searching Hotels and Showing Details
 //----------------------------------------------------------------------------------------------------------------------------
 
 app.post("/search",function(req,res){
@@ -455,70 +457,145 @@ app.get("/hotelDetails/:id",function(req,res){
 });
 
 
-function RoomTestingData(){
-       user.remove({},function(err){
-          if(err){
-             console.log(err);
-          }
-       });
 
-       admin.remove({},function(err){
-          if(err){
-             console.log(err);
-          }
-       });
-      
-      comment.remove({},function(err){
-       if(err){
-          console.log(err);
-       }else{
-          console.log("All Comments removed successfully!");
-       }
-   });
 
-   room.remove({},function(err){
+app.post("/checkAvailability/:id",function(req,res){
+   console.log("Inside the check Availability");
+   admin.findById(req.params.id).populate("room").exec(function(err,hotel){
       if(err){
          console.log(err);
       }else{
-         console.log("Successfully Removed!");
-      }
-   });
-   
-    function getRandomInt(min,max){
-      return Math.floor(Math.random() * ( max - min + 1 ) ) + min;
-    }
+            var type = req.body.room["roomType"];
+            var no_of_rooms   = req.body.room["No_of_rooms"];
+            var from_duration = req.body.room["From"];
+            var to_duration   = req.body.room["To"];
+
+            console.log(type);
+            console.log(no_of_rooms);
+            console.log(from_duration);
+            console.log(to_duration);
   
-   for(var i=100;i<=250;i++){
-       var RoomTypes = [
-          "standard",
-          "villa",
-          "penthouse",
-          "studio"
-       ];
+            var rooms = hotel.room;
+
+
+
+             // room.find({
+   //         roomType: "studio",//req.body.type,
+   //         beds    :  1,         //req.body.beds,
+   //         occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
+   //         cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
+   //         reserved:{
+   //            $not:{  //not specifies that this should not happen
+   //               $elemMatch:{
+   //                  from: {$lte: req.body.to}, //The date and time should not be overlapping
+   //                  to: {$gte: req.body.from}  // Dates and time should not be overlapping
+   //               }
+   //            }
+   //         }
+   //     },function(err, rooms){
+   //         if(err){
+   //             res.send(err);
+   //         }else {
+   //             console.log("Rooms Found:");
+   //             var obj = JSON.parse(JSON.stringify(rooms));
+   //             if(obj.length<req.body.no_of_rooms) {
+   //                  res.send("Max Availability="+obj.length);
+   //             }else{
+   //               res.send(obj); 
+   //               for(var i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
+   //                  room.findByIdAndUpdate(obj[i]._id,{
+   //                     $push: {"reserved": {from: req.body.from, to: req.body.to}}
+   //                 },{
+   //                     safe: true,
+   //                     new: true
+   //                 }, function(err, room){
+   //                     if(err){
+   //                         console.log("Error in updating:"+err);
+   //                     } else {
+   //                         console.log("Updated Room:"+room);
+   //                     }
+   //                 });
+   //               }
+   //             }
+   //         }
+   //     });
+
+
+
+
+      }
+   })
+  
+});
+
+
+
+
+
+// function RoomTestingData(){
+//        user.remove({},function(err){
+//           if(err){
+//              console.log(err);
+//           }
+//        });
+
+//        admin.remove({},function(err){
+//           if(err){
+//              console.log(err);
+//           }
+//        });
+      
+//       comment.remove({},function(err){
+//        if(err){
+//           console.log(err);
+//        }else{
+//           console.log("All Comments removed successfully!");
+//        }
+//    });
+
+//    room.remove({},function(err){
+//       if(err){
+//          console.log(err);
+//       }else{
+//          console.log("Successfully Removed!");
+//       }
+//    });
    
-        var newRoom = new room({
-           roomNo    : i,
-           roomType  : RoomTypes[getRandomInt(0,3)],
-           beds      : getRandomInt(1,6),
-           occupancy : getRandomInt(1,6),
-           cost      : getRandomInt(200,1000),
-           reserved  : [
-            {from    : '1970-02-01-12:30', to: '1970-02-02-12:40'},
-            {from    : '2010-01-01-12:10', to: '2010-01-03-13:50'},
-            {from    : '2011-01-01-11:00', to: '2011-01-01-13:50'}
-                   ]  
-        });
+//     function getRandomInt(min,max){
+//       return Math.floor(Math.random() * ( max - min + 1 ) ) + min;
+//     }
+  
+//    for(var i=100;i<=250;i++){
+//        var RoomTypes = [
+//           "standard",
+//           "villa",
+//           "penthouse",
+//           "studio"
+//        ];
    
-        newRoom.save(function(err,room){
-           if(err){
-              console.log(err);
-           }else{
-              console.log(room);
-           }
-        });
-       // For Testing purpose all rooms will be booked from specific dates to specific dates
-   }   
-}
+//         var newRoom = new room({
+//            roomNo    : i,
+//            roomType  : RoomTypes[getRandomInt(0,3)],
+//            beds      : getRandomInt(1,6),
+//            occupancy : getRandomInt(1,6),
+//            cost      : getRandomInt(200,1000),
+//            reserved  : [
+//             {from    : '1970-02-01-12:30', to: '1970-02-02-12:40'},
+//             {from    : '2010-01-01-12:10', to: '2010-01-03-13:50'},
+//             {from    : '2011-01-01-11:00', to: '2011-01-01-13:50'}
+//                    ]  
+//         });
+   
+//         newRoom.save(function(err,room){
+//            if(err){
+//               console.log(err);
+//            }else{
+//               console.log(room);
+//            }
+//         });
+//        // For Testing purpose all rooms will be booked from specific dates to specific dates
+//    }   
+// }
  
 var port = process.env.PORT || 9000
 
