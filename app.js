@@ -465,20 +465,13 @@ app.post("/checkAvailability/:id",function(req,res){
       if(err){
          console.log(err);
       }else{
-            var type = req.body.room["roomType"];
-            var no_of_rooms   = req.body.room["No_of_rooms"];
-            var from_duration = req.body.room["From"];
-            var to_duration   = req.body.room["To"];
-
-            console.log(type);
-            console.log(no_of_rooms);
-            console.log(from_duration);
-            console.log(to_duration);
-  
+            // var type = req.body.hotel.room[0]["roomType"];
             var rooms = hotel.room;
-
-
-
+            rooms.forEach(function(room){
+                  console.log(room.roomNo);
+            })
+            
+           
              // room.find({
    //         roomType: "studio",//req.body.type,
    //         beds    :  1,         //req.body.beds,
