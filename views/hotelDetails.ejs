@@ -1,0 +1,30 @@
+<%-include('partials/header.ejs') %>
+
+<h1>Hotel Details</h1>
+<div>
+    <h2><%=hotel.name %> </h2>
+    <p><%=hotel.description %></p>
+    <p>Simple Room Cost= <%=hotel.cost_of_simple_room%></p>
+    <p>Deluxe Room Cost= <%=hotel.cost_of_deluxe_room%></p>
+    <p>Super Deluxe Room Cost= <%=hotel.cost_of_superDeluxe_room%></p>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <th>Room Type</th>
+                <td><input type="text" name="RoomType" list="items">
+                    <datalist id="items">
+                        <option value="Simple"></option>
+                        <option value="Deluxe"></option>
+                        <option value="Super Deluxe"></option>
+                    </datalist>
+                </td>
+            </tr>
+            <tr>
+                <th>Number of Rooms</th>
+                <td><input type="number" name="No_of_rooms"></td>
+            </tr>            
+        </table>
+    </form>
+</div>
+
+<%-include('partials/footer.ejs') %>

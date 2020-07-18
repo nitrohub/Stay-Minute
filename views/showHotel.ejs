@@ -1,0 +1,11 @@
+<%- include('partials/header.ejs') %>
+<h1>Hotels</h1>
+
+<%hotels.forEach(function(hotel){%>
+        <h3><%=hotel.name %></h3>
+        <div><p>-<%=hotel.description %> </p>
+        <a href="/hotelDetails/<%=hotel._id%>">more</a>
+        </div>
+    <hr>
+<%})%>
+<%- include('partials/footer.ejs') %>

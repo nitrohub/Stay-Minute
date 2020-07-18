@@ -13,6 +13,9 @@ var hotelSchema   = new mongoose.Schema({
    username       :String,
    password       :String,
    description    :String,
+   cost_of_simple_room :String,
+   cost_of_deluxe_room :String,
+   cost_of_superDeluxe_room :String,
    room           : [
       {
          type     : mongoose.Schema.Types.ObjectId,

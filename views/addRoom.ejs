@@ -1,10 +1,10 @@
 <%- include('partials/header.ejs') %>
 <form method="POST" action="/addroom/<%=admin._id%>">
 <% for(var i=0; i < no_of_rooms ; i++){ %>
-    <input type = "number" name="room[number<%=i%>]" placeholder="Room Number" value=1>
+    <input type = "number" name="room[number<%=i%>]" placeholder="Room Number" value="<%=(i+1)%>">
     <input type = "text" name="room[type<%=i%>]" placeholder="Type" value="luxury">
-    <input type = "number" name="room[beds<%=i%>]" placeholder = "Number of beds" value=10>
-    <input type = "number" name="room[occupancy<%=i%>]" placeholder = "Occupancy" value=12>
+    <input type = "number" name="room[beds<%=i%>]" placeholder = "Number of beds" value=2>
+    <input type = "number" name="room[occupancy<%=i%>]" placeholder = "Occupancy" value=2>
     <input type = "number" name="room[cost<%=i%>]" placeholder = "Cost" value=12345>
 <br>
 <% } %>

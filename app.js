@@ -20,8 +20,8 @@
 //Adding user information while registering other than username and password - done
 //Inserting rooms in the hotel - done
 //Inserting comments in the hotel - done
-//Searching operation by city - less
-//Showing hotels - less
+//Searching operation by city - done
+//Showing hotels - 
 //Commenting on hotel - less
 //checkout room from the hotel from room array - time
 //showing the hotels - less
@@ -293,13 +293,16 @@ app.post("/Radmin",function(req,res){
    var name          = req.body.name;
    var owner         = req.body.owner;
    var no_of_rooms   = req.body.no_of_rooms;
-   var city          = req.body.city;
+   var city          = req.body.city.toLowerCase();
    var location      = req.body.location;
    var image         = req.body.image;
    var phone         = req.body.phone;
    var username      = req.body.username;
    var password      = req.body.password;
    var description   = req.body.description;
+   var cost_of_simple_room = req.body.cost_of_simple_room;
+   var cost_of_deluxe_room = req.body.cost_of_deluxe_room;
+   var cost_of_super_deluxe_room = req.body.cost_of_superDeluxe_room;
    var newAdmin = new admin({
    name : name,
    owner : owner,
@@ -310,7 +313,10 @@ app.post("/Radmin",function(req,res){
    phone : phone,
    username : username,
    password : password,
-   description :description
+   description :description,
+   cost_of_simple_room : cost_of_simple_room,
+   cost_of_deluxe_room : cost_of_deluxe_room,
+   cost_of_super_deluxe_room : cost_of_super_deluxe_room
    });
 
    no_of_rooms_global_var=no_of_rooms;
@@ -419,12 +425,35 @@ app.get("/Oadmin",function(req,res){
 });
 
 //----------------------------------------------------------------------------------------------------------------------------
-//Searching 
+//Searching Hotels and Sshowing Details
 //----------------------------------------------------------------------------------------------------------------------------
 
 app.post("/search",function(req,res){
-    res.send("This is search!");
+   var city = req.body.city.toLowerCase();
+   admin.find({city:city},function(err,hotels){
+      if(err){
+         console.log("Error in finding the hotels");
+      }else{
+         res.render("showHotel",{hotels:hotels});
+      }
+   })
 });
+
+app.get("/hotelDetails/:id",function(req,res){
+   var id =req.params.id;
+   admin.find({_id:id},function(err,hotel){
+      if(err){
+         console.log(err);
+      }else{
+         res.render("hotelDetails",{hotel:hotel[0]})
+         // console.log("Room Type="+hotel[0]);
+         
+      }
+      
+   })
+   // res.render("hotelDetails");
+});
+
 
 function RoomTestingData(){
        user.remove({},function(err){
