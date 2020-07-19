@@ -2,7 +2,6 @@
 //Async await
 
 
-
 //filtering according to time and date using mongodb - done
 //Implement The booking on single room using JavaScript - done
 //Using the mongoDb if possible and atlast - done
@@ -23,13 +22,13 @@
 //Inserting rooms in the hotel - done
 //Inserting comments in the hotel - done
 //Searching operation by city - done
-//Showing hotels - 
-//Commenting on hotel - less
+//Showing hotels -done
+//booking the room - time 
 //checkout room from the hotel from room array - time
-//showing the hotels - less
-//booking the room - less
+//Commenting on hotel - less
 //working on middlewares - less
-//Apply body-parsers on form - less 10th of December
+//Apply body-parsers on form - less
+//Modularizing - time 
 //*********************************Till here its basic***********************************/
 //validations on input types by html 
 //Optimizing the website
@@ -339,44 +338,94 @@ function failure(){
    console.log("Failure in entry!");
 }
 
+// 
+
+
+
+
+
 app.post("/addroom/:id",function(req,res){
+   var roomEntry = [];
    for(var i=0;i<no_of_rooms_global_var;i++){
-    var number    = req.body.room["number".concat(i.toString())];
-    var type      = req.body.room["type".concat(i.toString())];
-    var beds      = req.body.room["beds".concat(i.toString())];
-    var occupancy = req.body.room["occupancy".concat(i.toString())];
-    var cost      = req.body.room["cost".concat(i.toString())];
+    var number    = req.body.room["number".concat((i+1).toString())];
+    var type      = req.body.room["type".concat((i+1).toString())];
+    var beds      = req.body.room["beds".concat((i+1).toString())];
+    var occupancy = req.body.room["occupancy".concat((i+1).toString())];
+    var cost      = req.body.room["cost".concat((i+1).toString())];
     
-   //  console.log("This is the admin ka id:",req.params.id);
+      
+      var newRoom = new room({
+         roomNo     : number,
+         roomType   : type,
+         beds       : beds,
+         occupancy  : occupancy,
+         cost       : cost
+      });
+
+      roomEntry.push(newRoom);
+
+   }
+
 
     admin.findById(req.params.id,function(err,found){
+      function myFucnc(i){
+         return new Promise((resolve,reject)=>{
+            room.create(roomEntry[i],function(err,newRoom){
+               if(err){
+                  console.log("Error in creating new Room");
+                  reject();
+               }else{
+                  // console.log("Found Hotel = "+found);
+                  let p = new Promise((resolve,reject)=>{
+                     found.room.push(newRoom);
+                        resolve();
+                  });
+                  let q = new Promise((resolve,reject)=>{
+                     found.save();
+                     resolve();
+                  });
+                  
+                  p.then(function(){
+                     q.then(function(){
+                        resolve();                        
+                        console.log("Room="+newRoom.roomNo);
+                     }).catch(function(){
+                        console.log("Error in inserting Rooms");
+                     }).catch(function(){
+                        console.log("Error in saving Rooms");
+                     })
+                  })
+
+               }
+            })
+            
+         });
+      }
+
        if(err){
           console.log("Error in finding the hotel admin");
           res.redirect("/");
-       }else{
-          var newRoom = new room({
-             roomNo     : number,
-             roomType   : type,
-             beds       : beds,
-             occupancy  : occupancy,
-             cost       : cost
-          });
-          room.create(newRoom,function(err,newRoom){
-             if(err){
-                console.log("Error in creating new Room");
-             }else{
-                found.room.push(newRoom);
-                found.save();
-                console.log("Room Registered!");
-             }
-          })
+       }else{     
+            // console.log("Hotel Found!");
+
+            async function registerRooms(){
+               for(let i=0;i<no_of_rooms_global_var;i++){
+                     await myFucnc(i);
+                     console.log("Room"+(i+1)+"Registered!");
+                 }
+            }
+            registerRooms();
        }
     })
-   }
+   
       
       res.redirect("/");
 
 });
+
+
+
+
 
 
 passport.use("admin",new localStrategy(
@@ -461,16 +510,18 @@ app.get("/hotelDetails/:id",function(req,res){
 
 app.post("/checkAvailability/:id",function(req,res){
    console.log("Inside the check Availability");
-   admin.findById(req.params.id).populate("room").exec(function(err,hotel){
+   admin.find({_id : req.params.id}).populate("room").exec(function(err,hotel){
       if(err){
          console.log(err);
       }else{
             // var type = req.body.hotel.room[0]["roomType"];
-            var rooms = hotel.room;
-            rooms.forEach(function(room){
-                  console.log(room.roomNo);
-            })
-            
+            // var rooms = hotel.room;
+            // rooms.forEach(function(room){
+            //       console.log(room.roomNo);
+            // })
+            console.log(hotel.room[0]);
+            console.log(hotel.room[1]);
+            console.log(hotel.room[2]);
            
              // room.find({
    //         roomType: "studio",//req.body.type,
