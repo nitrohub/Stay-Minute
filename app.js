@@ -1,5 +1,5 @@
 //Promise - done 
-//Async await
+//Async await -done
 
 
 //filtering according to time and date using mongodb - done
@@ -48,6 +48,8 @@ var room = require("./models/room");
 var comment = require("./models/comment");
 var admin = require("./models/Hoteladmin");  //importing the schema
 var user = require("./models/user");  //Contains the Schema of user
+const { resolve } = require("path");
+const { Console } = require("console");
 var localStrategy = require("passport-local").Strategy;
 
 
@@ -388,7 +390,6 @@ app.post("/addroom/:id",function(req,res){
                   p.then(function(){
                      q.then(function(){
                         resolve();                        
-                        console.log("Room="+newRoom.roomNo);
                      }).catch(function(){
                         console.log("Error in inserting Rooms");
                      }).catch(function(){
@@ -508,52 +509,111 @@ app.post("/checkAvailability/:id",function(req,res){
       if(err){
          console.log(err);
       }else{
-            
-            console.log("Hotel="+hotel[0]);
+         var count = 0;
+         var book = [];
+          loop1: for(let i=0;i<hotel[0].room.length;i++){
 
-            hotel.room.find({
-           roomType: req.body.type,
-         //   beds    :  1,// req.body.beds,
-   //         occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
-   //         cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
-           reserved:{
-              $not:{  //not specifies that this should not happen
-                 $elemMatch:{
-                    from: {$lte: req.body.to}, //The date and time should not be overlapping
-                    to: {$gte: req.body.from}  // Dates and time should not be overlapping
-                 }
-              }
-           }
-       },function(err, rooms){
-           if(err){
-               res.send(err);
-           }else {
-               console.log("Rooms Found:");
-               var obj = JSON.parse(JSON.stringify(rooms));
-               if(obj.length<req.body.no_of_rooms) {
-                    res.send("Max Availability="+obj.length);
-               }else{
-                 res.send(obj); 
-                 for(let i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
-                    room.findByIdAndUpdate(obj[i]._id,{
-                       $push: {"reserved": {from: req.body.from, to: req.body.to}}
-                   },{
-                       safe: true,
-                       new: true
-                   }, function(err, room){
-                       if(err){
-                           console.log("Error in updating:"+err);
-                       } else {
-                           console.log("Room:"+obj[i]._id+" booked from :"+req.body.from+" to : "+req.body.to);
-                       }
-                   });
-                 }
+             let roomOfHotel = hotel[0].room[i];
+               //   console.log("Room "+i+" = "+roomOfHotel);
+            if(roomOfHotel.roomType.localeCompare(req.body.roomType)==0){
+
+               loop2: for(let j=0;j<roomOfHotel.reserved.length;j++){
+
+                  let reservation = roomOfHotel.reserved[j];
+                  // console.log("Reservation "+j+"="+reservation);
+
+                  if((req.body.from>=reservation.from && req.body.from<=reservation.to) || (req.body.to >= reservation.from && req.body.to<=reservation.to)){
+                     console.log("Break to loop2");
+                     break loop2;
+                }
                }
-           }
-       });
+               
+               count++;
+               console.log("Count="+count);
+               // console.log("Room ID="+roomOfHotel._id);
+               book.push(roomOfHotel._id);  //ith room had the space
+               
+               if(count>=req.body.No_of_room){
+                  break loop1;
+               } 
+             }
+
+          }
+
+
+function booking(){
+   for(let i=0;i<book.length;i++){
+                 room.findByIdAndUpdate(book[i],{
+                    $push: {"reserved": {from: req.body.from, to: req.body.to}}
+                },{
+                    safe: true,
+                    new: true
+                }, function(err, room){
+                    if(err){
+                        console.log("Error in updating:"+err);
+                    } else {
+                       console.log("Room Booked");
+                    }
+                });
+              }
+
+
+   }         
+            if(count>=req.body.No_of_room){
+                  booking();
+                  res.send("Rooms Reserved Successfully!");
+           }else{
+              res.redirect("/checkAvailability/"+req.params.id);              
+           } 
       }
    })
 });
+
+
+
+// console.log("Hotel="+hotel[0]);
+
+// hotel.room.find({
+// roomType: req.body.type,
+// //   beds    :  1,// req.body.beds,
+// //         occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
+// //         cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
+// reserved:{
+//   $not:{  //not specifies that this should not happen
+//      $elemMatch:{
+//         from: {$lte: req.body.to}, //The date and time should not be overlapping
+//         to: {$gte: req.body.from}  // Dates and time should not be overlapping
+//      }
+//   }
+// }
+// },function(err, rooms){
+// if(err){
+//    res.send(err);
+// }else {
+//    console.log("Rooms Found:");
+//    var obj = JSON.parse(JSON.stringify(rooms));
+//    if(obj.length<req.body.no_of_rooms) {
+//         res.send("Max Availability="+obj.length);
+//    }else{
+//      res.send(obj); 
+//      for(let i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
+//         room.findByIdAndUpdate(obj[i]._id,{
+//            $push: {"reserved": {from: req.body.from, to: req.body.to}}
+//        },{
+//            safe: true,
+//            new: true
+//        }, function(err, room){
+//            if(err){
+//                console.log("Error in updating:"+err);
+//            } else {
+//                console.log("Room:"+obj[i]._id+" booked from :"+req.body.from+" to : "+req.body.to);
+//            }
+//        });
+//      }
+//    }
+// }
+// });
+
 
 
 

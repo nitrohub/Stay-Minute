@@ -2,7 +2,7 @@
 <form method="POST" action="/addroom/<%=admin._id%>">
 <% for(var i=0; i < no_of_rooms ; i++){ %>
     <input type = "number" name="room[number<%=(i+1)%>]" placeholder="Room Number" value="<%=(i+1)%>">
-    <input type = "text" name="room[type<%=(i+1)%>]" placeholder="Type" value="luxury">
+    <input type = "text" name="room[type<%=(i+1)%>]" placeholder="Type" value="Simple">
     <input type = "number" name="room[beds<%=(i+1)%>]" placeholder = "Number of beds" value=2>
     <input type = "number" name="room[occupancy<%=(i+1)%>]" placeholder = "Occupancy" value=2>
     <input type = "number" name="room[cost<%=(i+1)%>]" placeholder = "Cost" value=12345>

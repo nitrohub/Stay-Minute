@@ -12,7 +12,7 @@
         <table border="1px">
             <tr>
                 <th>Room Type</th>
-                <td><input type="text" name="room[roomType]" list="items">
+                <td><input type="text" name="roomType" list="items">
                     <datalist id="items">
                         <option value="Simple"></option>
                         <option value="Deluxe"></option>
@@ -22,15 +22,15 @@
             </tr>
             <tr>
                 <th>Number of Rooms</th>
-                <td><input type="number" name="room[No_of_rooms]" id="no"></td>
+                <td><input type="number" name="No_of_room" id="no"></td>
             </tr>         
             <tr>
                 <th>From</th>
-                <td><input type="text" name="room[From]" placeholder="Format : yyyy-mm-dd-hh:mm"></td>
+                <td><input type="text" name="from" placeholder="Format : yyyy-mm-dd-hh:mm"></td>
             </tr>  
             <tr>
                 <th>To</th>
-                <td><input type="text" name="room[To]" placeholder="Format : yyyy-mm-dd-hh:mm"></td>
+                <td><input type="text" name="to" placeholder="Format : yyyy-mm-dd-hh:mm"></td>
             </tr> 
             <tr>
                 <td><h4 >Total</h4></td>
@@ -52,7 +52,7 @@
 <script>
     function Amount(){
     var nos = document.getElementById("no").value;
-    var types = document.getElementsByName("room[roomType]")[0].value;
+    var types = document.getElementsByName("roomType")[0].value;
     var amount="";
     if(types.localeCompare("Simple")==0){
         amount = parseInt(nos) * parseInt("<%=hotel.cost_of_simple_room%>");
