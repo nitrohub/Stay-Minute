@@ -342,10 +342,6 @@ function failure(){
 
 // 
 
-
-
-
-
 app.post("/addroom/:id",function(req,res){
    var roomEntry = [];
    for(var i=0;i<no_of_rooms_global_var;i++){
@@ -505,6 +501,8 @@ app.get("/hotelDetails/:id",function(req,res){
 
 app.post("/checkAvailability/:id",function(req,res){
    console.log("Inside the check Availability");
+   var fromDate;
+   var toDate;
    admin.find({_id : req.params.id}).populate("room").exec(function(err,hotel){
       if(err){
          console.log(err);
@@ -521,18 +519,20 @@ app.post("/checkAvailability/:id",function(req,res){
 
                   let reservation = roomOfHotel.reserved[j];
                   // console.log("Reservation "+j+"="+reservation);
-
-                  if((req.body.from>=reservation.from && req.body.from<=reservation.to) || (req.body.to >= reservation.from && req.body.to<=reservation.to)){
+                   fromDate = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.from.substring(8,10));
+                   toDate   = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.to.substring(8,10));
+                  // console.log("From="+from);
+                  // console.log("To="+to);
+                  if((from>=parseInt(reservation.from) && from<=parseInt(reservation.to)) || (to >= parseInt(reservation.from) && to<=parseInt(reservation.to))){
                      console.log("Break to loop2");
                      break loop2;
                 }
                }
                
                count++;
-               console.log("Count="+count);
-               // console.log("Room ID="+roomOfHotel._id);
+               // console.log("Count="+count);
                book.push(roomOfHotel._id);  //ith room had the space
-               
+
                if(count>=req.body.No_of_room){
                   break loop1;
                } 
@@ -544,7 +544,7 @@ app.post("/checkAvailability/:id",function(req,res){
 function booking(){
    for(let i=0;i<book.length;i++){
                  room.findByIdAndUpdate(book[i],{
-                    $push: {"reserved": {from: req.body.from, to: req.body.to}}
+                    $push: {"reserved": {from: fromDate.toString(), to: toDate.toString()}}
                 },{
                     safe: true,
                     new: true
@@ -556,11 +556,12 @@ function booking(){
                     }
                 });
               }
-
-
    }         
             if(count>=req.body.No_of_room){
-                  booking();
+               console.log("FromDate="+fromDate);
+               console.log("ToDate="+toDate);
+               booking();
+
                   res.send("Rooms Reserved Successfully!");
            }else{
               res.redirect("/checkAvailability/"+req.params.id);              
