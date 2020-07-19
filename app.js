@@ -22,7 +22,7 @@
 //Inserting rooms in the hotel - done
 //Inserting comments in the hotel - done
 //Searching operation by city - done
-//Showing hotels -done
+//Showing hotels - done
 //booking the room - time 
 //checkout room from the hotel from room array - time
 //Commenting on hotel - less
@@ -424,10 +424,6 @@ app.post("/addroom/:id",function(req,res){
 });
 
 
-
-
-
-
 passport.use("admin",new localStrategy(
    function(username, password, done) {
     admin.getAdminByUsername(username,function(err,Admin){
@@ -506,70 +502,57 @@ app.get("/hotelDetails/:id",function(req,res){
 });
 
 
-
-
 app.post("/checkAvailability/:id",function(req,res){
    console.log("Inside the check Availability");
    admin.find({_id : req.params.id}).populate("room").exec(function(err,hotel){
       if(err){
          console.log(err);
       }else{
-            // var type = req.body.hotel.room[0]["roomType"];
-            // var rooms = hotel.room;
-            // rooms.forEach(function(room){
-            //       console.log(room.roomNo);
-            // })
-            console.log(hotel.room[0]);
-            console.log(hotel.room[1]);
-            console.log(hotel.room[2]);
-           
-             // room.find({
-   //         roomType: "studio",//req.body.type,
-   //         beds    :  1,         //req.body.beds,
+            
+            console.log("Hotel="+hotel[0]);
+
+            hotel.room.find({
+           roomType: req.body.type,
+         //   beds    :  1,// req.body.beds,
    //         occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
    //         cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
-   //         reserved:{
-   //            $not:{  //not specifies that this should not happen
-   //               $elemMatch:{
-   //                  from: {$lte: req.body.to}, //The date and time should not be overlapping
-   //                  to: {$gte: req.body.from}  // Dates and time should not be overlapping
-   //               }
-   //            }
-   //         }
-   //     },function(err, rooms){
-   //         if(err){
-   //             res.send(err);
-   //         }else {
-   //             console.log("Rooms Found:");
-   //             var obj = JSON.parse(JSON.stringify(rooms));
-   //             if(obj.length<req.body.no_of_rooms) {
-   //                  res.send("Max Availability="+obj.length);
-   //             }else{
-   //               res.send(obj); 
-   //               for(var i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
-   //                  room.findByIdAndUpdate(obj[i]._id,{
-   //                     $push: {"reserved": {from: req.body.from, to: req.body.to}}
-   //                 },{
-   //                     safe: true,
-   //                     new: true
-   //                 }, function(err, room){
-   //                     if(err){
-   //                         console.log("Error in updating:"+err);
-   //                     } else {
-   //                         console.log("Updated Room:"+room);
-   //                     }
-   //                 });
-   //               }
-   //             }
-   //         }
-   //     });
-
-
-
-
+           reserved:{
+              $not:{  //not specifies that this should not happen
+                 $elemMatch:{
+                    from: {$lte: req.body.to}, //The date and time should not be overlapping
+                    to: {$gte: req.body.from}  // Dates and time should not be overlapping
+                 }
+              }
+           }
+       },function(err, rooms){
+           if(err){
+               res.send(err);
+           }else {
+               console.log("Rooms Found:");
+               var obj = JSON.parse(JSON.stringify(rooms));
+               if(obj.length<req.body.no_of_rooms) {
+                    res.send("Max Availability="+obj.length);
+               }else{
+                 res.send(obj); 
+                 for(let i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
+                    room.findByIdAndUpdate(obj[i]._id,{
+                       $push: {"reserved": {from: req.body.from, to: req.body.to}}
+                   },{
+                       safe: true,
+                       new: true
+                   }, function(err, room){
+                       if(err){
+                           console.log("Error in updating:"+err);
+                       } else {
+                           console.log("Room:"+obj[i]._id+" booked from :"+req.body.from+" to : "+req.body.to);
+                       }
+                   });
+                 }
+               }
+           }
+       });
       }
    })
-  
 });
 
 
