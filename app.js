@@ -341,60 +341,7 @@ app.post("/addroom/:id",function(req,res){
 
       }
    })
-      
-
-
-   //  admin.findById(req.params.id,function(err,found){
-   //    function myFucnc(i){
-   //       return new Promise((resolve,reject)=>{
-   //          room.create(roomEntry[i],function(err,newRoom){
-   //             if(err){
-   //                console.log("Error in creating new Room");
-   //                reject();
-   //             }else{
-   //                // console.log("Found Hotel = "+found);
-   //                let p = new Promise((resolve,reject)=>{
-   //                   found.room.push(newRoom);
-   //                      resolve();
-   //                });
-   //                let q = new Promise((resolve,reject)=>{
-   //                   found.save();
-   //                   resolve();
-   //                });
-                  
-   //                p.then(function(){
-   //                   q.then(function(){
-   //                      resolve();                        
-   //                   }).catch(function(){
-   //                      console.log("Error in inserting Rooms");
-   //                   }).catch(function(){
-   //                      console.log("Error in saving Rooms");
-   //                   })
-   //                })
-
-   //             }
-   //          })
             
-   //       });
-   //    }
-
-   //     if(err){
-   //        console.log("Error in finding the hotel admin");
-   //        res.redirect("/");
-   //     }else{     
-   //          // console.log("Hotel Found!");
-
-   //          async function registerRooms(){
-   //             for(let i=0;i<no_of_rooms_global_var;i++){
-   //                   await myFucnc(i);
-   //                   console.log("Room"+(i+1)+"Registered!");
-   //               }
-   //          }
-   //          registerRooms();
-   //     }
-   //  })
-   
-      
       res.redirect("/");
 
 });
