@@ -1,0 +1,42 @@
+//Promise - done 
+//Async await -done
+
+
+//filtering according to time and date using mongodb - done
+//Implement The booking on single room using JavaScript - done
+//Using the mongoDb if possible and atlast - done
+//Checking for booking of multiple rooms and book a room - done 
+//Booking multiple rooms - done
+//Corner cases checking - done
+//User registration operation  - done
+//Cleaning the mess into models -done
+//Adding Comments route - done
+//Adding Comments - done
+//Showing Comments - done
+//Updating comments - done
+//Deleting Comments - done
+//Creating hotel Admin -done
+//Registering the hotel admin - done
+//Authenticating the hotel admin - done
+//Adding user information while registering other than username and password - done
+//Inserting rooms in the hotel - done
+//Inserting comments in the hotel - done
+//Searching operation by city - done
+//Showing hotels - done
+//booking the room - done
+//bulk insert - time-20
+//checkout room from the hotel from room array - time-20
+//working on middlewares - less-21
+//Apply body-parsers on form - less-21
+//Modularizing - time -21
+//Functional integrated website - 22
+//5Days from Start
+//********************************************************************/
+//Plan the optimization elaborately -> finished producct
+//validations on input types by html 
+//Optimizing the website
+//Testing the operations for booking
+//Commenting on hotel - less
+//********** UI improvements ***********
+//implementing basic bootstrap and html css
+//Flash message if the number of rooms is not available
