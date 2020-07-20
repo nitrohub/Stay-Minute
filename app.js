@@ -162,48 +162,48 @@ app.get("/room",function(req,res){
      });
 });
 
-app.post("/room",function(req,res){
-    room.find({
-            roomType: "studio",//req.body.type,
-            beds    :  1,         //req.body.beds,
-            occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
-            cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
-            reserved:{
-               $not:{  //not specifies that this should not happen
-                  $elemMatch:{
-                     from: {$lte: req.body.to}, //The date and time should not be overlapping
-                     to: {$gte: req.body.from}  // Dates and time should not be overlapping
-                  }
-               }
-            }
-        },function(err, rooms){
-            if(err){
-                res.send(err);
-            }else {
-                console.log("Rooms Found:");
-                var obj = JSON.parse(JSON.stringify(rooms));
-                if(obj.length<req.body.no_of_rooms) {
-                     res.send("Max Availability="+obj.length);
-                }else{
-                  res.send(obj); 
-                  for(var i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
-                     room.findByIdAndUpdate(obj[i]._id,{
-                        $push: {"reserved": {from: req.body.from, to: req.body.to}}
-                    },{
-                        safe: true,
-                        new: true
-                    }, function(err, room){
-                        if(err){
-                            console.log("Error in updating:"+err);
-                        } else {
-                            console.log("Updated Room:"+room);
-                        }
-                    });
-                  }
-                }
-            }
-        });
-});
+// app.post("/room",function(req,res){
+//     room.find({
+//             roomType: "studio",//req.body.type,
+//             beds    :  1,         //req.body.beds,
+//             occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
+//             cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
+//             reserved:{
+//                $not:{  //not specifies that this should not happen
+//                   $elemMatch:{
+//                      from: {$lte: req.body.to}, //The date and time should not be overlapping
+//                      to: {$gte: req.body.from}  // Dates and time should not be overlapping
+//                   }
+//                }
+//             }
+//         },function(err, rooms){
+//             if(err){
+//                 res.send(err);
+//             }else {
+//                 console.log("Rooms Found:");
+//                 var obj = JSON.parse(JSON.stringify(rooms));
+//                 if(obj.length<req.body.no_of_rooms) {
+//                      res.send("Max Availability="+obj.length);
+//                 }else{
+//                   res.send(obj); 
+//                   for(var i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
+//                      room.findByIdAndUpdate(obj[i]._id,{
+//                         $push: {"reserved": {from: req.body.from, to: req.body.to}}
+//                     },{
+//                         safe: true,
+//                         new: true
+//                     }, function(err, room){
+//                         if(err){
+//                             console.log("Error in updating:"+err);
+//                         } else {
+//                             console.log("Updated Room:"+room);
+//                         }
+//                     });
+//                   }
+//                 }
+//             }
+//         });
+// });
 
 //---------------------------------------------------------------------------------------
 //Comment Routes
@@ -501,29 +501,36 @@ app.get("/hotelDetails/:id",function(req,res){
 
 app.post("/checkAvailability/:id",function(req,res){
    console.log("Inside the check Availability");
-   var fromDate;
-   var toDate;
+   
    admin.find({_id : req.params.id}).populate("room").exec(function(err,hotel){
       if(err){
          console.log(err);
       }else{
+         
          var count = 0;
-         var book = [];
+         var book = [];  // to store the Room Id to store the reservations.
+         var fromDate = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.from.substring(8,10));
+         var toDate   = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.to.substring(8,10));
           loop1: for(let i=0;i<hotel[0].room.length;i++){
 
              let roomOfHotel = hotel[0].room[i];
                //   console.log("Room "+i+" = "+roomOfHotel);
             if(roomOfHotel.roomType.localeCompare(req.body.roomType)==0){
 
-               loop2: for(let j=0;j<roomOfHotel.reserved.length;j++){
+               loop2: for(let j=0;j<roomOfHotel.reserved.length;j++){  //Checking all the reservations of the rooms
 
                   let reservation = roomOfHotel.reserved[j];
                   // console.log("Reservation "+j+"="+reservation);
-                   fromDate = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.from.substring(8,10));
-                   toDate   = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.to.substring(8,10));
-                  // console.log("From="+from);
-                  // console.log("To="+to);
-                  if((from>=parseInt(reservation.from) && from<=parseInt(reservation.to)) || (to >= parseInt(reservation.from) && to<=parseInt(reservation.to))){
+                   
+                  //  console.log("From Date="+fromDate);
+                  //  console.log("To Date="+toDate);
+                  //  console.log("Reservation From="+reservation.from);
+                  //  console.log("Reservation to="+reservation.to);
+                  //  console.log("from>reservation.form=>"+fromDate>=parseInt(reservation.from));
+                  //  console.log("from<reservation.to=>"+fromDate<=parseInt(reservation.to));
+                  //  console.log("to>reservation.from=>"+toDate >= parseInt(reservation.from));
+                  //  console.log("to<reservation.to=>"+toDate<=parseInt(reservation.to));
+                  if((fromDate>=parseInt(reservation.from) && fromDate<=parseInt(reservation.to)) || (toDate >= parseInt(reservation.from) && toDate<=parseInt(reservation.to))){
                      console.log("Break to loop2");
                      break loop2;
                 }
@@ -541,10 +548,13 @@ app.post("/checkAvailability/:id",function(req,res){
           }
 
 
-function booking(){
+function booking(fromDate,toDate){
+   console.log("Inside Booking from=>"+fromDate);
+   console.log("Inside Booking to=>"+toDate);
+
    for(let i=0;i<book.length;i++){
                  room.findByIdAndUpdate(book[i],{
-                    $push: {"reserved": {from: fromDate.toString(), to: toDate.toString()}}
+                    $push: {"reserved": {from: (fromDate.toString()), to: (toDate.toString())}}
                 },{
                     safe: true,
                     new: true
@@ -552,19 +562,19 @@ function booking(){
                     if(err){
                         console.log("Error in updating:"+err);
                     } else {
-                       console.log("Room Booked");
+                       console.log("Reservation Booked from=>"+room.reserved.from);
+                       console.log("Reservation Booked to=>"+room.reserved.to);
                     }
                 });
               }
    }         
             if(count>=req.body.No_of_room){
-               console.log("FromDate="+fromDate);
-               console.log("ToDate="+toDate);
-               booking();
-
+               console.log("FromDate before Booking="+fromDate);
+               console.log("ToDate before Booking="+toDate);
+               booking(fromDate,toDate);
                   res.send("Rooms Reserved Successfully!");
            }else{
-              res.redirect("/checkAvailability/"+req.params.id);              
+                 res.send("only "+count+" rooms are left");            
            } 
       }
    })
