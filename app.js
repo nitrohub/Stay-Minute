@@ -500,7 +500,7 @@ app.get("/hotelDetails/:id",function(req,res){
 
 
 app.post("/checkAvailability/:id",function(req,res){
-   console.log("Inside the check Availability");
+   // console.log("Inside the check Availability");
    
    admin.find({_id : req.params.id}).populate("room").exec(function(err,hotel){
       if(err){
@@ -508,11 +508,14 @@ app.post("/checkAvailability/:id",function(req,res){
       }else{
          
          var count = 0;
+         console.log("Count before searching="+count);
+         
          var book = [];  // to store the Room Id to store the reservations.
+         console.log("Book before searching="+book);
          var fromDate = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.from.substring(8,10));
          var toDate   = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.to.substring(8,10));
           loop1: for(let i=0;i<hotel[0].room.length;i++){
-
+             var flag=0;
              let roomOfHotel = hotel[0].room[i];
                //   console.log("Room "+i+" = "+roomOfHotel);
             if(roomOfHotel.roomType.localeCompare(req.body.roomType)==0){
@@ -521,36 +524,41 @@ app.post("/checkAvailability/:id",function(req,res){
 
                   let reservation = roomOfHotel.reserved[j];
                   // console.log("Reservation "+j+"="+reservation);
-                   
-                  //  console.log("From Date="+fromDate);
-                  //  console.log("To Date="+toDate);
-                  //  console.log("Reservation From="+reservation.from);
-                  //  console.log("Reservation to="+reservation.to);
-                  //  console.log("from>reservation.form=>"+fromDate>=parseInt(reservation.from));
-                  //  console.log("from<reservation.to=>"+fromDate<=parseInt(reservation.to));
-                  //  console.log("to>reservation.from=>"+toDate >= parseInt(reservation.from));
-                  //  console.log("to<reservation.to=>"+toDate<=parseInt(reservation.to));
-                  if((fromDate>=parseInt(reservation.from) && fromDate<=parseInt(reservation.to)) || (toDate >= parseInt(reservation.from) && toDate<=parseInt(reservation.to))){
+                  //  console.log("****************************************************")
+                  //  console.log("From="+fromDate);
+                  //  console.log("To="+toDate);
+                  //  console.log("Reservation.From="+reservation.from);
+                  //  console.log("Reservation.To="+reservation.to);
+                  //  console.log("from>=reservation.form="+(fromDate>=parseInt(reservation.from)));
+                  //  console.log("from=<reservation.to="+(fromDate<=parseInt(reservation.to)));
+                  //  console.log("to>=reservation.from="+(toDate >= parseInt(reservation.from)));
+                  //  console.log("to=<reservation.to="+(toDate<=parseInt(reservation.to)));
+                  //  console.log("****************************************************")
+                  if(((fromDate>=parseInt(reservation.from)) && (fromDate<=parseInt(reservation.to))) || ((toDate >= parseInt(reservation.from)) && (toDate<=parseInt(reservation.to)) ) ){
                      console.log("Break to loop2");
+                     flag=1;
                      break loop2;
                 }
                }
-               
-               count++;
-               // console.log("Count="+count);
-               book.push(roomOfHotel._id);  //ith room had the space
-
-               if(count>=req.body.No_of_room){
-                  break loop1;
-               } 
+               // console.log("After Breaking loop2");
+               if(flag==0){  //if it is not in the reservation then only
+                  count++;
+                  console.log("Count="+count);
+                  book.push(roomOfHotel._id);  //ith room had the space
+                  if(count>=req.body.No_of_room){
+                     console.log("Count="+count);
+                        break loop1;
+                  }
+               }
+                
              }
 
           }
 
 
 function booking(fromDate,toDate){
-   console.log("Inside Booking from=>"+fromDate);
-   console.log("Inside Booking to=>"+toDate);
+   // console.log("Inside Booking from=>"+fromDate);
+   // console.log("Inside Booking to=>"+toDate);
 
    for(let i=0;i<book.length;i++){
                  room.findByIdAndUpdate(book[i],{
@@ -562,15 +570,15 @@ function booking(fromDate,toDate){
                     if(err){
                         console.log("Error in updating:"+err);
                     } else {
-                       console.log("Reservation Booked from=>"+room.reserved.from);
-                       console.log("Reservation Booked to=>"+room.reserved.to);
+                     //   console.log("Reservation Booked from=>"+room.reserved);
                     }
                 });
               }
    }         
             if(count>=req.body.No_of_room){
-               console.log("FromDate before Booking="+fromDate);
-               console.log("ToDate before Booking="+toDate);
+               console.log("Count after Searching="+count);
+               // console.log("FromDate before Booking="+fromDate);
+               // console.log("ToDate before Booking="+toDate);
                booking(fromDate,toDate);
                   res.send("Rooms Reserved Successfully!");
            }else{
