@@ -24,6 +24,7 @@
 //Searching operation by city - done
 //Showing hotels - done
 //booking the room - time 
+//bulk insert - time
 //checkout room from the hotel from room array - time
 //Commenting on hotel - less
 //working on middlewares - less
@@ -512,8 +513,12 @@ app.post("/checkAvailability/:id",function(req,res){
          
          var book = [];  // to store the Room Id to store the reservations.
          console.log("Book before searching="+book);
-         var fromDate = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.from.substring(8,10));
-         var toDate   = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.to.substring(8,10));
+         var fromDate = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.from.substring(8,10) + req.body.from.substring(11,13) + req.body.from.substring(14,16));
+         var toDate   = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.to.substring(8,10) + req.body.to.substring(11,13) + req.body.to.substring(14,16));
+
+         console.log("From After time = "+fromDate);
+         console.log("To After time = "+toDate);
+
           loop1: for(let i=0;i<hotel[0].room.length;i++){
              var flag=0;
              let roomOfHotel = hotel[0].room[i];
