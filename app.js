@@ -107,6 +107,9 @@ app.get("/",function(req,res){
    res.render("landing");
 });
 
+app.get("/index",(req,res)=>{
+   res.render("index");
+});
 
 //------------------------------------------------------------------------------------
 //Sorting Rooms according to our parameters Routes
@@ -122,48 +125,6 @@ app.get("/room",function(req,res){
      });
 });
 
-// app.post("/room",function(req,res){
-//     room.find({
-//             roomType: "studio",//req.body.type,
-//             beds    :  1,         //req.body.beds,
-//             occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
-//             cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
-//             reserved:{
-//                $not:{  //not specifies that this should not happen
-//                   $elemMatch:{
-//                      from: {$lte: req.body.to}, //The date and time should not be overlapping
-//                      to: {$gte: req.body.from}  // Dates and time should not be overlapping
-//                   }
-//                }
-//             }
-//         },function(err, rooms){
-//             if(err){
-//                 res.send(err);
-//             }else {
-//                 console.log("Rooms Found:");
-//                 var obj = JSON.parse(JSON.stringify(rooms));
-//                 if(obj.length<req.body.no_of_rooms) {
-//                      res.send("Max Availability="+obj.length);
-//                 }else{
-//                   res.send(obj); 
-//                   for(var i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
-//                      room.findByIdAndUpdate(obj[i]._id,{
-//                         $push: {"reserved": {from: req.body.from, to: req.body.to}}
-//                     },{
-//                         safe: true,
-//                         new: true
-//                     }, function(err, room){
-//                         if(err){
-//                             console.log("Error in updating:"+err);
-//                         } else {
-//                             console.log("Updated Room:"+room);
-//                         }
-//                     });
-//                   }
-//                 }
-//             }
-//         });
-// });
 
 //---------------------------------------------------------------------------------------
 //Comment Routes
@@ -518,121 +479,12 @@ function booking(fromDate,toDate){
    })
 });
 
+//*****************************Checkout***************************************************************************
+app.get("/checkout",(req,res)=>{
+   res.render("checkout");
+})
 
 
-// console.log("Hotel="+hotel[0]);
-
-// hotel.room.find({
-// roomType: req.body.type,
-// //   beds    :  1,// req.body.beds,
-// //         occupancy: {$gte: 2},//req.body.occupancy},  //should be greater than the number of guests
-// //         cost: {$gte: req.body.lower, $lte: req.body.upper},  //greater than or equal to lower range and less than or equals to higher range    
-// reserved:{
-//   $not:{  //not specifies that this should not happen
-//      $elemMatch:{
-//         from: {$lte: req.body.to}, //The date and time should not be overlapping
-//         to: {$gte: req.body.from}  // Dates and time should not be overlapping
-//      }
-//   }
-// }
-// },function(err, rooms){
-// if(err){
-//    res.send(err);
-// }else {
-//    console.log("Rooms Found:");
-//    var obj = JSON.parse(JSON.stringify(rooms));
-//    if(obj.length<req.body.no_of_rooms) {
-//         res.send("Max Availability="+obj.length);
-//    }else{
-//      res.send(obj); 
-//      for(let i=0;i<req.body.no_of_rooms;i++){  //For inserting multiple rooms
-//         room.findByIdAndUpdate(obj[i]._id,{
-//            $push: {"reserved": {from: req.body.from, to: req.body.to}}
-//        },{
-//            safe: true,
-//            new: true
-//        }, function(err, room){
-//            if(err){
-//                console.log("Error in updating:"+err);
-//            } else {
-//                console.log("Room:"+obj[i]._id+" booked from :"+req.body.from+" to : "+req.body.to);
-//            }
-//        });
-//      }
-//    }
-// }
-// });
-
-
-
-
-
-
-// function RoomTestingData(){
-//        user.remove({},function(err){
-//           if(err){
-//              console.log(err);
-//           }
-//        });
-
-//        admin.remove({},function(err){
-//           if(err){
-//              console.log(err);
-//           }
-//        });
-      
-//       comment.remove({},function(err){
-//        if(err){
-//           console.log(err);
-//        }else{
-//           console.log("All Comments removed successfully!");
-//        }
-//    });
-
-//    room.remove({},function(err){
-//       if(err){
-//          console.log(err);
-//       }else{
-//          console.log("Successfully Removed!");
-//       }
-//    });
-   
-//     function getRandomInt(min,max){
-//       return Math.floor(Math.random() * ( max - min + 1 ) ) + min;
-//     }
-  
-//    for(var i=100;i<=250;i++){
-//        var RoomTypes = [
-//           "standard",
-//           "villa",
-//           "penthouse",
-//           "studio"
-//        ];
-   
-//         var newRoom = new room({
-//            roomNo    : i,
-//            roomType  : RoomTypes[getRandomInt(0,3)],
-//            beds      : getRandomInt(1,6),
-//            occupancy : getRandomInt(1,6),
-//            cost      : getRandomInt(200,1000),
-//            reserved  : [
-//             {from    : '1970-02-01-12:30', to: '1970-02-02-12:40'},
-//             {from    : '2010-01-01-12:10', to: '2010-01-03-13:50'},
-//             {from    : '2011-01-01-11:00', to: '2011-01-01-13:50'}
-//                    ]  
-//         });
-   
-//         newRoom.save(function(err,room){
-//            if(err){
-//               console.log(err);
-//            }else{
-//               console.log(room);
-//            }
-//         });
-//        // For Testing purpose all rooms will be booked from specific dates to specific dates
-//    }   
-// }
- 
 var port = process.env.PORT || 9000
 
 app.listen(port,function(err){
