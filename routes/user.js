@@ -29,16 +29,24 @@ router.get("/signup",function(req,res){  //go to signup page
  });
   
           user.createUser(newUser,function(err,user){ //As we call create user the user goes to the function which is inside the models which hashes the password and saves the new user to the database
-              if(err)  throw err;
-              console.log(user);
+              if(err){
+              console.log(err);
+              }else{
+                 console.log(user);
+            req.login(user,function(err){
+               if(err){
+                  console.log(err);
+               }
+               return res.redirect("/index");
+            })
+              }
           });
-          res.render("landing");
   });
  
   
   router.post("/login",passport.authenticate("user",{  //User login
     successRedirect :"/index",  
-    failureRedirect : "/login",
+    failureRedirect : "/login"
   }),function(req,res){
   });
  
