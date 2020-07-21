@@ -37,14 +37,14 @@ router.get("/signup",function(req,res){  //go to signup page
  
   
   router.post("/login",passport.authenticate("user",{  //User login
-    successRedirect :"/",  
+    successRedirect :"/index",  
     failureRedirect : "/login",
   }),function(req,res){
   });
  
   router.get("/logout",function(req,res){
     req.logout();
-    res.send("Logout successful!");
+    res.redirect("/index");
   });
 
  

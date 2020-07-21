@@ -31,7 +31,7 @@ app.use(session({
 //Passport initialize
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function(req,res,next){
+app.use(function(req,res,next){  //to use currentUser directly without passing any argument to the ejs files
    res.locals.currentUser = req.user;
    next();
 })
@@ -79,6 +79,7 @@ app.get("/",function(req,res){
 app.get("/index",(req,res)=>{
    res.render("index");
 });
+
 
 //------------------------------------------------------------------------------------
 //Sorting Rooms according to our parameters Routes
