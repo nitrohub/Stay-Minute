@@ -32,7 +32,6 @@ router.post("/search",function(req,res){
  
  
  router.post("/checkAvailability/:id",middleware.isLoggedIn,function(req,res){
-    // console.log("Inside the check Availability");
     
     admin.find({_id : req.params.id}).populate("room").exec(function(err,hotel){
        if(err){
@@ -97,8 +96,8 @@ router.post("/search",function(req,res){
     // console.log("Inside Booking to=>"+toDate);
  
     for(let i=0;i<book.length;i++){
-                  room.findByIdAndUpdate(book[i],{
-                     $push: {"reserved": {from: (fromDate.toString()), to: (toDate.toString())}}
+                  room.findByIdAndUpdate(book[i],{                     
+                     $push: {"reserved": {from: (fromDate.toString()), to: (toDate.toString()), customer:{id:req.user._id,name:req.user.name}}}
                  },{
                      safe: true,
                      new: true
