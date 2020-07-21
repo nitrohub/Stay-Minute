@@ -2,6 +2,7 @@ var express = require("express");
 var router  = express.Router();
 var admin = require("../models/Hoteladmin");
 var room  = require("../models/room");
+var middleware    = require("../middleware/index");
 
 router.post("/search",function(req,res){
     var city = req.body.city.toLowerCase();
@@ -30,7 +31,7 @@ router.post("/search",function(req,res){
  });
  
  
- router.post("/checkAvailability/:id",function(req,res){
+ router.post("/checkAvailability/:id",middleware.isLoggedIn,function(req,res){
     // console.log("Inside the check Availability");
     
     admin.find({_id : req.params.id}).populate("room").exec(function(err,hotel){
@@ -122,5 +123,6 @@ router.post("/search",function(req,res){
        }
     })
  });
+
  
  module.exports = router;

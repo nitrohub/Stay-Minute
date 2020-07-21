@@ -10,6 +10,7 @@ var admin = require("./models/Hoteladmin");  //importing the schema
 var user = require("./models/user");  //Contains the Schema of user
 var localStrategy = require("passport-local").Strategy;
 
+
 var userRoutes = require("./routes/user"),
     commentRoutes = require("./routes/comments"),
     BookingRoutes = require("./routes/booking"),

@@ -35,9 +35,7 @@ router.get("/signup",function(req,res){  //go to signup page
           res.render("landing");
   });
  
- 
-
- 
+  
   router.post("/login",passport.authenticate("user",{  //User login
     successRedirect :"/",  
     failureRedirect : "/login",
@@ -49,12 +47,7 @@ router.get("/signup",function(req,res){  //go to signup page
     res.send("Logout successful!");
   });
 
-  function isLoggedIn(req,res,next){  //preparing a middleware
-    if(req.isAuthenticated()){
-         return next();
-    }
-    res.redirect("/login");
- }
+ 
 
  module.exports = router;
  
