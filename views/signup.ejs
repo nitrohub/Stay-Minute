@@ -1,15 +1,33 @@
 <%- include ('partials/header.ejs') %>
      
-<h1> Signup!</h1>
-
+<div class="container">
+    <center>
+        <div class="img-thumbnail frm">
+    <h1>Signup</h1>    
         <form method="POST" action="/signup">
-            <input type = "text" name = "name" placeholder = "Name">
-            <input type = "number" name = "age" placeholder = "Age">
-            <input type = "text" name = "contact" placeholder = "contact details">
-            <input type = "text" name="username" placeholder="Email">
-            <input type = "password" name="password" placeholder = "Password">
-            <input type = "submit" value = "signup">
+            <div class="form-group">
+                <input type = "text" name = "name" placeholder = "Name" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type = "number" name = "age" placeholder = "Age" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type = "text" name = "contact" placeholder = "contact details" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type = "text" name="username" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type = "password" name="password" class="form-control" placeholder = "Password">
+            </div>
+            <div class="form-group">
+                <input type = "submit" class="form-control button btn-primary" value = "signup">
+            </div>
         </form>
+    </div>
+    </center>
+    
+    </div>
 <%- include ('partials/footer.ejs') %>
 
 

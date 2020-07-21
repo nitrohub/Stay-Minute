@@ -10,7 +10,6 @@ var admin = require("./models/Hoteladmin");  //importing the schema
 var user = require("./models/user");  //Contains the Schema of user
 var localStrategy = require("passport-local").Strategy;
 
-
 var userRoutes = require("./routes/user"),
     commentRoutes = require("./routes/comments"),
     BookingRoutes = require("./routes/booking"),
@@ -18,9 +17,12 @@ var userRoutes = require("./routes/user"),
 
 var app = express();
 mongoose.connect("mongodb://localhost/StayMinute");
-app.set("view engine","ejs");
+
+
 
 app.use(bodyParser.urlencoded({extended:true}));
+app.set("view engine","ejs");
+app.use(express.static(__dirname+"/public"));
 app.use(methodOverride('_method'));
 app.use(session({
    secret : "secret",
