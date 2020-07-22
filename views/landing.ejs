@@ -30,7 +30,7 @@
     <div class="container">
 
       <div class="pull-left">
-        <a href="/"><h2><b>STAY MINUTE</b></h2></a>
+        <a href="/"><h2 style="color:White" id="sm"><b>STAY MINUTE</b></h2></a>
       </div>
     </div>
   </header>
@@ -251,6 +251,16 @@
   <script src="/vendor/aos/aos.js"></script>
 
   <script src="js/main.js"></script>
+  <script>
+  $(document).ready(function(){
+  $("#sm").mouseenter(function(){
+    $(this).css("color","#2dc997");
+  });
+  $("#sm").mouseleave(function(){
+    $(this).css("color","#ffffff");
+  });
+});
+  </script>
 
 </body>
 </html>
