@@ -2,3 +2,35 @@
     width:40%;
     margin:50px;
 }
+
+.frm1{
+    width:60%;
+    margin:50px;
+}
+
+
+input[type="submit"]:hover{
+  background-color : #FFFFFF;
+  border-color: #2dc997;
+  color : #2dc997;
+}
+
+
+
+input[type="submit"]:focus{
+    background-color : #FFFFFF;
+  border-color: #2dc997;
+  color : #2dc997;
+  box-shadow:0 0 5px #2dc997;
+}
+
+input[type="submit"]{
+    background-color: #2dc997;   
+    border-color: #2dc997;
+}
+
+input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus,input[type="email"]:focus{
+    border-color: #2dc997;
+    box-shadow:0 0 5px #2dc997;
+    
+}

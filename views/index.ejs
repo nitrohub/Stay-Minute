@@ -1,27 +1,19 @@
 <%- include ('partials/header.ejs') %>
 
-<div class="<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-3">Fluid jumbo heading</h1>
-    <p class="lead">Jumbo helper text</p>
-    <hr class="my-2">
-    <p>More info</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-    </p>
-  </div>
-</div>"
-
-
-
-
   <ul><% if(currentUser){ %>
     <h3>Welcome, <%= currentUser.name %></h3>
     <%}%>
   </ul>
-<form action="/search" method = "POST">
-<input type = "text" name = "city" placeholder="Location">
-<input type = "submit" value="Search">
-</form>
-
+<div class="container">
+  <center>
+  <form action="/search" method = "POST" class="frm1">
+    <div class="form-group input-group">
+      <input class="form-control" type = "text" name = "city" placeholder="Location">
+      <div class="form-group">
+        <input class="button form-control" type = "submit" value="Search">
+      </div>
+    </div>
+  </form>
+  </center>
+</div>
 <%- include ('partials/footer.ejs') %>
