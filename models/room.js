@@ -4,7 +4,6 @@ var roomSchema = mongoose.Schema({
     roomType  : String,
     beds      : Number,
     occupancy : Number,
-    cost      : Number,
     reserved  : [
        {
          from : String,

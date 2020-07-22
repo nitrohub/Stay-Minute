@@ -2,6 +2,7 @@
 <h1>Hotels</h1>
 
 <%hotels.forEach(function(hotel){%>
+        <img src="<%=hotel.image%>" alt="Hotel image"/>
         <h3><%=hotel.name %></h3>
         <div><p>-<%=hotel.description %> </p>
         <a href="/hotelDetails/<%=hotel._id%>">more</a>

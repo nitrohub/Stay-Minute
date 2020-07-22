@@ -59,15 +59,13 @@ router.post("/addroom/:id",function(req,res){
      var type      = req.body.room["type".concat((i+1).toString())];
      var beds      = req.body.room["beds".concat((i+1).toString())];
      var occupancy = req.body.room["occupancy".concat((i+1).toString())];
-     var cost      = req.body.room["cost".concat((i+1).toString())];
      
        
        var newRoom = new room({
           roomNo     : number,
           roomType   : type,
           beds       : beds,
-          occupancy  : occupancy,
-          cost       : cost
+          occupancy  : occupancy
        });
  
        roomEntry.push(newRoom);

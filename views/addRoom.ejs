@@ -2,10 +2,27 @@
 <form method="POST" action="/addroom/<%=admin._id%>">
 <% for(var i=0; i < no_of_rooms ; i++){ %>
     <input type = "number" name="room[number<%=(i+1)%>]" placeholder="Room Number" value="<%=(i+1)%>">
-    <input type = "text" name="room[type<%=(i+1)%>]" placeholder="Type" value="Simple">
-    <input type = "number" name="room[beds<%=(i+1)%>]" placeholder = "Number of beds" value=2>
-    <input type = "number" name="room[occupancy<%=(i+1)%>]" placeholder = "Occupancy" value=2>
-    <input type = "number" name="room[cost<%=(i+1)%>]" placeholder = "Cost" value=12345>
+    <% if(i<=(no_of_rooms/3)){ %>
+        <input type = "text" name="room[type<%=(i+1)%>]" placeholder="Type" value="Simple">
+    <% }else if(i<=2*(no_of_rooms)/3){ %>
+        <input type = "text" name="room[type<%=(i+1)%>]" placeholder="Type" value="Deluxe">
+    <% }else{ %>
+        <input type = "text" name="room[type<%=(i+1)%>]" placeholder="Type" value="Super Deluxe">
+    <% } %>
+    <% if(i<=(no_of_rooms/3)){ %>
+        <input type = "number" name="room[beds<%=(i+1)%>]" placeholder = "Number of beds" value=1>
+    <% }else if(i<=2*(no_of_rooms)/3){ %>
+        <input type = "number" name="room[beds<%=(i+1)%>]" placeholder = "Number of beds" value=2>
+    <% }else{ %>
+        <input type = "number" name="room[beds<%=(i+1)%>]" placeholder = "Number of beds" value=3>
+    <% } %>
+    <% if(i<=(no_of_rooms/3)){ %>
+        <input type = "number" name="room[occupancy<%=(i+1)%>]" placeholder = "Occupancy" value=2>
+    <% }else if(i<=2*(no_of_rooms)/3){ %>
+        <input type = "number" name="room[occupancy<%=(i+1)%>]" placeholder = "Occupancy" value=3>
+    <% }else{ %>
+        <input type = "number" name="room[occupancy<%=(i+1)%>]" placeholder = "Occupancy" value=4>
+    <% } %>    
 <br>
 <% } %>
 <input type = "submit" value="Submit">
