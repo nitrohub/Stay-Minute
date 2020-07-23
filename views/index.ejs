@@ -8,12 +8,40 @@
   <center>
   <form action="/search" method = "POST" class="frm1">
     <div class="form-group input-group">
-      <input class="form-control" type = "text" name = "city" placeholder="Location">
+      <input class="form-control" type = "text" name = "city" placeholder="Location" id="input">
       <div class="form-group">
-        <input class="button form-control" type = "submit" value="Search">
+        <button class="form-control button" id="butn"><i class="fa fa-search" aria-hidden="true"></i> search</button>
       </div>
     </div>
   </form>
   </center>
+  <% if(!typeof hotels==="undefined"){ %>
+    <div id="ajaxbod">
+      <%hotels.forEach(function(hotel){%>
+        <img src="<%=hotel.image%>" alt="Hotel image"/>
+        <h3><%=hotel.name %></h3>
+        <div><p>-<%=hotel.description %> </p>
+        <a href="/hotelDetails/<%=hotel._id%>">more</a>
+        </div>
+    <hr>
+  <%})%>
+  </div>
+  <% } %>
 </div>
+<script>
+  $("#input").blur(function(){
+      var input = $("#input").val();
+      if(input!=""){
+        $.ajax({
+          method : "POST",
+          url    : "/search",
+          data: {"key":input.toLowerCase()}
+        }).done(response => {
+          var bodyContent = response('#ajaxbod').html(bodyContent);
+        })
+      }
+  });
+</script>
 <%- include ('partials/footer.ejs') %>
+
+

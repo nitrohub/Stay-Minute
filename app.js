@@ -27,7 +27,7 @@ app.use(methodOverride('_method'));
 app.use(session({
    secret : "secret",
    saveUninitialized : true,
-   resave : true
+   resave : false
 }));
 
 //Passport initialize

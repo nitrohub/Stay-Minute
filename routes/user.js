@@ -18,7 +18,7 @@ router.get("/signup",function(req,res){  //go to signup page
     var name       = req.body.name;
     var age        = req.body.age;
     var contact    = req.body.contact;
-    var username   = req.body.username;
+    var username   = req.body.username.toLowerCase();
     var password   = req.body.password;
        var newUser = new user({
           username : username,
@@ -28,7 +28,12 @@ router.get("/signup",function(req,res){  //go to signup page
           name     : name
  });
   
-          user.createUser(newUser,function(err,user){ //As we call create user the user goes to the function which is inside the models which hashes the password and saves the new user to the database
+      user.find({username:username},function(err,found){
+         if(err){
+            console.log("There is error in the code");
+         }else{
+           if(found.length==0){
+               user.createUser(newUser,function(err,user){ //As we call create user the user goes to the function which is inside the models which hashes the password and saves the new user to the database
               if(err){
               console.log(err);
               }else{
@@ -41,6 +46,11 @@ router.get("/signup",function(req,res){  //go to signup page
             })
               }
           });
+           }else{
+              res.redirect("/login");
+           }
+         }
+      })
   });
  
   

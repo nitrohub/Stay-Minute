@@ -41,4 +41,3 @@ module.exports.getUserById = function(id,callback){
 }
 
 
-//  module.exports = mongoose.model("user",userSchema);

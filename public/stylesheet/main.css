@@ -34,3 +34,21 @@ input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus
     box-shadow:0 0 5px #2dc997;
     
 }
+
+#butn{
+    background-color : #2dc997;
+    color: #FFFFFF;
+}
+
+#butn:focus,#butn:hover{
+    background-color : #ffffff;
+    color: #2dc997;
+}
+
+#butn:focus{
+    box-shadow: 0 0 5px #2dc997;
+}
+
+/* #fornav:hover{
+    color : #FFFFFF;
+} */

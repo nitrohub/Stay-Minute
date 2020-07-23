@@ -5,14 +5,19 @@ var room  = require("../models/room");
 var middleware    = require("../middleware/index");
 
 router.post("/search",function(req,res){
-    var city = req.body.city.toLowerCase();
-    admin.find({city:city},function(err,hotels){
-       if(err){
-          console.log("Error in finding the hotels");
-       }else{
-          res.render("showHotel",{hotels:hotels});
-       }
-    })
+   //  var city = req.body.city.toLowerCase();
+   // 
+      var city = req.body["key"];
+      admin.find({city:city},function(err,hotels){
+             if(err){
+                console.log("Error in finding the hotels");
+             }else{
+                res.render("index",{hotels:hotels});
+             }
+          })
+      
+
+
  });
  
  router.get("/hotelDetails/:id",function(req,res){
