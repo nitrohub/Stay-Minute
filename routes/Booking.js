@@ -50,11 +50,15 @@ router.post("/search",function(req,res){
           
           var book = [];  // to store the Room Id to store the reservations.
           console.log("Book before searching="+book);
-          var fromDate = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.from.substring(8,10) + req.body.from.substring(11,13) + req.body.from.substring(14,16));
-          var toDate   = parseInt( req.body.from.substring(0,4) + req.body.from.substring(5,7) + req.body.to.substring(8,10) + req.body.to.substring(11,13) + req.body.to.substring(14,16));
+          var fromInput =req.body.from.toString();
+          var toInput   =req.body.to.toString();
+            // console.log("fr="+fromInput);
+            // console.log("to="+toInput);
+          var fromDate = parseInt( fromInput.substring(0,4) + fromInput.substring(5,7) + fromInput.substring(8,10) + fromInput.substring(11,13) + fromInput.substring(14,16));
+          var toDate   = parseInt( toInput.substring(0,4) + toInput.substring(5,7) + toInput.substring(8,10) + toInput.substring(11,13) + toInput.substring(14,16));
  
-          console.log("From After time = "+fromDate);
-          console.log("To After time = "+toDate);
+          console.log("From Date = "+fromDate);
+          console.log("To Date = "+toDate);
  
            loop1: for(let i=0;i<hotel[0].room.length;i++){
               var flag=0;
