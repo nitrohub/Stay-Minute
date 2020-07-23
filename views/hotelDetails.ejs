@@ -41,14 +41,34 @@
             <td><input type="reset" value="reset"></td>
         </tr>
         </table>
-    </center>
-    </form>
 
+    </form>
+           <well>
+            <% hotel.comment.forEach(function(comment){ %>
+                <p><%= comment.Comment %></p>
+                <small>-<%= comment.Author.name %></small>
+              <%  if(currentUser){ %>
+                    <% if(comment.Author.id==currentUser.id){  %>
+                        <a href="/comment/<%=comment._id%>/edit" class="button frm">Edit</a>
+                    <%}%>
+                 <% }  %>
+            <% }); %>
+            </well>
+        
+
+    <% if(currentUser){  %>
+       <form method="post" action="/comment/<%=hotel._id %>">
+           <input type="text" name="comment" placeholder="Comments">
+           <button class="button">Comment</button>
+       </form>
+      <% } %>
+
+    </center>
+    
+    
 </div>
 
 
-
-<%-include('partials/footer.ejs') %>
 <script>
     function Amount(){
     var nos = document.getElementById("no").value;
@@ -66,3 +86,6 @@
 }
 
 </script>
+
+
+<%-include('partials/footer.ejs') %>

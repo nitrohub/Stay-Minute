@@ -25,7 +25,7 @@ var hotelSchema   = new mongoose.Schema({
    comment        : [
       {
          type        : mongoose.Schema.Types.ObjectId,
-         ref   : "comment"  //name of the model
+         ref         : "comment"  //name of the model
       }
    ]
 });

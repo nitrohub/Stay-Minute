@@ -9,7 +9,7 @@ var comment = require("./models/comment");
 var admin = require("./models/Hoteladmin");  //importing the schema
 var user = require("./models/user");  //Contains the Schema of user
 var localStrategy = require("passport-local").Strategy;
-
+// var ejsLint = require('ejs-lint');
 var userRoutes = require("./routes/user"),
     commentRoutes = require("./routes/comments"),
     BookingRoutes = require("./routes/booking"),
@@ -29,7 +29,7 @@ app.use(session({
    saveUninitialized : true,
    resave : false
 }));
-
+// app.use(ejsLint);
 //Passport initialize
 app.use(passport.initialize());
 app.use(passport.session());

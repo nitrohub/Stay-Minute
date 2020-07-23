@@ -2,6 +2,7 @@ var express = require("express");
 var router  = express.Router();
 var admin = require("../models/Hoteladmin");
 var room  = require("../models/room");
+var comment = require("../models/comment");
 var middleware    = require("../middleware/index");
 
 router.post("/search",function(req,res){
@@ -26,16 +27,13 @@ router.post("/search",function(req,res){
  
  router.get("/hotelDetails/:id",function(req,res){
     var id =req.params.id;
-    admin.find({_id:id},function(err,hotel){
-       if(err){
-          console.log(err);
-       }else{
-          res.render("hotelDetails",{hotel:hotel[0]})
-          // console.log("Room Type="+hotel[0]);
-          
-       }
-       
-    })
+    admin.findById(id).populate("comment").exec(function(err,foundHotel){
+      if(err){
+         console.log(err)
+      }else{
+         res.render("hotelDetails",{hotel:foundHotel});
+      }
+    });
     // res.render("hotelDetails");
  });
  

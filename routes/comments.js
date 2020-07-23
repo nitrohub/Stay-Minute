@@ -1,11 +1,10 @@
 var express = require("express");
 var router  = express.Router();
 var user    = require("../models/comment");
+var admin   = require("../models/Hoteladmin");
+var comment = require("../models/comment");
 
 //Route you get when you want to comment on the hotel
-router.get("/comment",function(req,res){
-    res.render("comment");
- });
  
 router.get("/comment/:id/edit",function(req,res){
     console.log("The comment to be edited = "+req.params.id);
@@ -19,20 +18,22 @@ router.get("/comment/:id/edit",function(req,res){
  });
  
 router.post("/comment/:id",function(req,res){
-    // res.send("You are commenting!");
+
     admin.findById(req.params.id,function(err,foundadmin){
           if(err){
              console.log(err);
           }else{
- 
-             comment.create(req.body.comment,function(err,comments){
+             comment.create({Comment : req.body.comment,Author:{id:req.user._id,name:req.user.name}},function(err,comment){
                 if(err){
                    console.log(err);
                 }else{
-                   admin.comment.push(req.body.comment);
-                   admin.save();
+                  //  comment.Author.id=req.user._id;
+                  //  comment.Author.name=req.user.name;
+                  //  comment.save();
+                   foundadmin.comment.push(comment);
+                   foundadmin.save();
                    console.log("Commented Successfully!");
-                   res.redirect("/room");
+                   res.redirect("/hotelDetails/"+req.params.id);
                 }
           })
  
@@ -46,7 +47,7 @@ router.put("/comment/:id",function(req,res){
         if(err){
             console.log(err);
         }else{
-            res.redirect("/room");
+            res.redirect("/hotel");
         }
      });
  });
