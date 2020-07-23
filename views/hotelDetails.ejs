@@ -49,7 +49,10 @@
                 <small>-<%= comment.Author.name %></small>
               <%  if(currentUser){ %>
                     <% if(comment.Author.id==currentUser.id){  %>
-                        <a href="/comment/<%=comment._id%>/edit" class="button frm">Edit</a>
+                        <a href="/hotel/<%=hotel._id%>/comment/<%=comment._id%>/edit" class="button">Edit</a>
+                        <form id="delete-form" action="/hotel/<%=hotel._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-xs btn-danger">Delete</button>
+                        </form>
                     <%}%>
                  <% }  %>
             <% }); %>

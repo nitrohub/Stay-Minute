@@ -6,13 +6,17 @@ var comment = require("../models/comment");
 
 //Route you get when you want to comment on the hotel
  
-router.get("/comment/:id/edit",function(req,res){
-    console.log("The comment to be edited = "+req.params.id);
-    comment.findById(req.params.id,function(err,comment){
+router.get("/hotel/:id/comment/:cid/edit",function(req,res){
+    console.log("The comment to be edited = "+req.params.cid);
+    comment.findById(req.params.cid,function(err,comment){
        if(err){
           console.log(err);
        }else{
-          res.render("commentEdit",{comment:comment});
+          data = {
+             hid : req.params.id,
+             comment : comment
+          }
+          res.render("commentEdit",data);
        }
     });
  });
@@ -42,22 +46,25 @@ router.post("/comment/:id",function(req,res){
     });
  });
  
-router.put("/comment/:id",function(req,res){
-     comment.findByIdAndUpdate(req.params.id,req.body.comment,function(err,updated){
-        if(err){
+router.put("/hotel/:id/comment/:cid",function(req,res){
+
+      console.log("Edited="+req.body.comment);
+     comment.findByIdAndUpdate(req.params.cid,{Comment:req.body.comment},function(err,updated){
+        if(err){           
             console.log(err);
         }else{
-            res.redirect("/hotel");
+            console.log("Updated="+updated);
+            res.redirect("/hotelDetails/"+req.params.id);
         }
      });
  });
  
-router.delete("/comment/:id",function(req,res){
-     comment.findByIdAndRemove(req.params.id,function(err){
+router.delete("/hotel/:id/comment/:cid",function(req,res){
+     comment.findByIdAndRemove(req.params.cid,function(err){
          if(err){
             console.log(err);
          }else{
-            res.redirect("/room");
+            res.redirect("/hotelDetails/"+req.params.id);
          }
      });
     });
