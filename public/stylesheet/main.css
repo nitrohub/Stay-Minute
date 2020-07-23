@@ -27,12 +27,18 @@ input[type="submit"]:focus{
 input[type="submit"]{
     background-color: #2dc997;   
     border-color: #2dc997;
+    color : #FFFFFF
 }
 
-input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus,input[type="email"]:focus{
+input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus,input[type="email"]:focus,input[type="datetime-local"]:focus{
     border-color: #2dc997;
     box-shadow:0 0 5px #2dc997;
     
+}
+
+#foc:focus{
+    border-color: #2dc997;
+    box-shadow:0 0 5px #2dc997;
 }
 
 #butn{
@@ -49,6 +55,18 @@ input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus
     box-shadow: 0 0 5px #2dc997;
 }
 
-/* #fornav:hover{
-    color : #FFFFFF;
-} */
+#del{
+color:#ffffff;
+background-color: #666666;
+}
+
+#del:hover,#del:focus{
+    color:#666666;
+    background-color: white;
+    border-color: #666666;
+}
+
+#del:focus{
+    border-color: #666666;
+    box-shadow:0 0 5px #666666
+}

@@ -1,79 +1,99 @@
 <%-include('partials/header.ejs') %>
+<div class="container">
+    <div class="jumbotron h1" style="margin-top:50px; text-align: center; background-color: #666666; color:#2dc997"><b>HOTEL DETAILS</b></div>
+    <div class="row">
+        <div class="col-lg-4 col-sm-4 col-md-4">
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item" style="text-align: center;">
+                        Cost for 30 Minutes
+                    </li>
+                    <li class="list-group-item">
+                    Simple Room<span class="fa-pull-right"><i class="fa fa-inr" aria-hidden="true"></i><%=hotel.cost_of_simple_room%></span>
+                    </li>
+                    <li class="list-group-item">
+                        Deluxe Room Cost<span class="fa-pull-right"><i class="fa fa-inr" aria-hidden="true"></i><%=hotel.cost_of_deluxe_room%></span>
+                    </li>
+                    <li class="list-group-item">
+                        Super Deluxe Room Cost<span class="fa-pull-right"><i class="fa fa-inr" aria-hidden="true"></i><%=hotel.cost_of_superDeluxe_room%></span>
+                    </li>
+                </ul>
+            </div>
+            <div style="margin-top: 100px;" class="img-thumbnail">
+                <form action="/checkAvailability/<%=hotel._id%>" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="roomType" list="items" placeholder="Room Type" class="form-control">
+                            <datalist id="items">
+                                <option value="Simple"></option>
+                                <option value="Deluxe"></option>
+                                <option value="Super Deluxe"></option>
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" placeholder="Number of Rooms" name="No_of_room" id="no" class="form-control">
+                        </div>
+                        
+                            <div class="form-group form-inline">
+                                    <input type="text"  onfocus="(this.type='datetime-local')" name="from" placeholder="From" class="form-control" style="width:100%"/>
+                            </div>                       
+                        <div class="form-group form-inline">
+                            <input type="text" onfocus="(this.type='datetime-local')" name="to" placeholder="To" class="form-control" style="width:100%"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Pay" class="form-control" />
+                        </div>
+                </form>
+            </div>
 
-<h1>Hotel Details</h1>
-<div>
-    <h2><%=hotel.name %> </h2>
-    <p><%=hotel.description %></p>
-    <p>Simple Room Cost= <%=hotel.cost_of_simple_room%></p>
-    <p>Deluxe Room Cost= <%=hotel.cost_of_deluxe_room%></p>
-    <p>Super Deluxe Room Cost= <%=hotel.cost_of_superDeluxe_room%></p>
-    <center>
-    <form action="/checkAvailability/<%=hotel._id%>" method="POST">
-        <table border="1px">
-            <tr>
-                <th>Room Type</th>
-                <td><input type="text" name="roomType" list="items" value="Simple">
-                    <datalist id="items">
-                        <option value="Simple"></option>
-                        <option value="Deluxe"></option>
-                        <option value="Super Deluxe"></option>
-                    </datalist>
-                </td>
-            </tr>
-            <tr>
-                <th>Number of Rooms</th>
-                <td><input type="number" name="No_of_room" id="no" value="2"></td>
-            </tr>         
-            <tr>
-                <th>From</th>
-                <!-- <td><input type="text" name="from" placeholder="Format : yyyy-mm-dd-hh:mm" value="2020-05-11-10:30"></td> -->
-                <td><input type="datetime-local" name="from" placeholder="From"/></td>
-            </tr>  
-            <tr>
-                <th>To</th>
-                <td><input type="datetime-local" name="to" placeholder="To"/></td>
-                <!-- <td><input type="text" name="to" placeholder="Format : yyyy-mm-dd-hh:mm" value="2020-05-13-11:30"></td> -->
-            </tr> 
-            <tr>
-                <td><h4 >Total</h4></td>
-                <td onclick="Amount()"><span id="app"></span></td>
-            </tr>
-        <tr>
-            <td><input type="submit" value="Pay"></td>
-            <td><input type="reset" value="reset"></td>
-        </tr>
-        </table>
+            <div class="img-thumbnail" style="margin-top:100px">
+            <% if(currentUser){  %>
+                    <form method="post" action="/comment/<%=hotel._id %>">
+                        <div class="form-group">
+                            <textArea name="comment" placeholder="Comment" class="form-control" id="foc"></textArea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Comment" class="form-control"/>
+                        </div>
+                    </form>
+               <% } %>
+            </div>
 
-    </form>
-           <well>
+        </div>
+
+        <div class="col-lg-8 col-sm-8 col-md-8">
+            <div class="img-thumbnail">
+                <img src="<%=hotel.image%>" alt="hotel Kshipra" style="height:100%; width:100%;"/>
+                <div class="h2" style="text-align: center;"><%=hotel.name%></div>
+                <div><p style="text-indent: 40px;">    <%=hotel.description %></p></div>
+            </div>
+
             <% hotel.comment.forEach(function(comment){ %>
-                <p><%= comment.Comment %></p>
-                <small>-<%= comment.Author.name %></small>
-              <%  if(currentUser){ %>
-                    <% if(comment.Author.id==currentUser.id){  %>
-                        <a href="/hotel/<%=hotel._id%>/comment/<%=comment._id%>/edit" class="button">Edit</a>
-                        <form id="delete-form" action="/hotel/<%=hotel._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST">
-                            <button class="btn btn-xs btn-danger">Delete</button>
-                        </form>
-                    <%}%>
-                 <% }  %>
-            <% }); %>
-            </well>
-        
+            <div class="card card-body bg-light" style="margin:10px 0px">
+                    <blockquote><%= comment.Comment %></blockquote>
+                        <div style="text-align: right;" class="credit"><cite>-<%= comment.Author.name %></cite></div>
+                    
+                  <%  if(currentUser){ %>
+                        <% if(comment.Author.id==currentUser.id){  %>
+                            <div class="form-inline">
+                            <form action="/hotel/<%=hotel._id%>/comment/<%=comment._id%>/edit" method="get">
+                                <input type="submit" value="Edit" class="btn" style="margin-right: 5px;">
+                            </form>
+                            <form id="delete-form" action="/hotel/<%=hotel._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST">
+                                <button class="btn" id="del">Delete</button>
+                            </form>
+                        </div>
+                        <%}%>
+                     <% }  %>
+                <% }); %>
+            </div>
 
-    <% if(currentUser){  %>
-       <form method="post" action="/comment/<%=hotel._id %>">
-           <input type="text" name="comment" placeholder="Comments">
-           <button class="button">Comment</button>
-       </form>
-      <% } %>
+        </div>
+    </div>
+    <div>    
+  </div>
+    
 
-    </center>
-    
-    
 </div>
-
-
 <script>
     function Amount(){
     var nos = document.getElementById("no").value;
