@@ -45,8 +45,9 @@
                 </form>
             </div>
 
-            <div class="img-thumbnail" style="margin-top:100px">
             <% if(currentUser){  %>
+            <div class="img-thumbnail" style="margin-top:100px">
+            
                     <form method="post" action="/comment/<%=hotel._id %>">
                         <div class="form-group">
                             <textArea name="comment" placeholder="Comment" class="form-control" id="foc"></textArea>
@@ -55,9 +56,8 @@
                             <input type="submit" value="Comment" class="form-control"/>
                         </div>
                     </form>
-               <% } %>
             </div>
-
+            <% } %>
         </div>
 
         <div class="col-lg-8 col-sm-8 col-md-8">
