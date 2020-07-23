@@ -7,12 +7,16 @@ var middleware    = require("../middleware/index");
 router.post("/search",function(req,res){
    //  var city = req.body.city.toLowerCase();
    // 
-      var city = req.body["key"];
+       console.log("Inside Search");
+      var city = req.body.city.toLowerCase();
+      console.log("city="+city);
       admin.find({city:city},function(err,hotels){
              if(err){
                 console.log("Error in finding the hotels");
              }else{
-                res.render("index",{hotels:hotels});
+                console.log("Hotel found="+hotels);
+                res.render("showHotel",{hotels:hotels});
+               // res.json(hotels);
              }
           })
       
