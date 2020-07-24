@@ -6,18 +6,17 @@ var comment = require("../models/comment");
 var middleware    = require("../middleware/index");
 
 router.post("/search",function(req,res){
-   //  var city = req.body.city.toLowerCase();
-   // 
-       console.log("Inside Search");
-      var city = req.body.city.toLowerCase();
-      console.log("city="+city);
+    var city = req.body.city.toLowerCase();
+      //  console.log("Inside Search");
+
+      // console.log(req.body);
       admin.find({city:city},function(err,hotels){
              if(err){
                 console.log("Error in finding the hotels");
              }else{
                 console.log("Hotel found="+hotels);
-                res.render("showHotel",{hotels:hotels});
-               // res.json(hotels);
+               //  res.render("showHotel",{hotels:hotels});
+               res.send(hotels);
              }
           })
       

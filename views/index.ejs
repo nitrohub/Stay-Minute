@@ -6,17 +6,47 @@
   </ul>
 <div class="container">
   <center>
-  <form action="/search" method = "POST" class="frm1">
-    <div class="form-group input-group">
-      <input class="form-control" type = "text" name = "city" placeholder="Location" id="input">
-      <div class="form-group">
-        <button class="form-control button" id="butn"><i class="fa fa-search" aria-hidden="true"></i> search</button>
+  <!-- <form action="/search" method = "POST" class="frm1"> -->
+    <div class="frm1">
+      <div class="form-group input-group">
+        <input class="form-control" type = "text" name = "city" placeholder="Location" id="input">
+        <div class="form-group">
+          <button class="butnAjax form-control button" id="butn"><i class="fa fa-search" aria-hidden="true"></i> search</button>
+        </div>
       </div>
     </div>
-  </form>
+ 
+        <div>
+        <img src="" id="response">
+        </div>
+  
+
+
   </center>
 </div>
-
+<script>
+  // 
+  var data;
+  document.querySelector(".butnAjax").addEventListener("click",function(){
+      console.log("button Clicked");
+      console.log(document.querySelector("input[name='city']").value);
+      fetch("/search",{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({city:(document.querySelector("input[name='city']").value)})
+      }).then(function(response){
+       return response.json();
+      }).then(function(response){
+            // console.log(response);
+            document.querySelector("#response").src=response[0].image;
+      }).catch(function(){
+        console.log("Error!");
+      })
+  })
+  
+</script>
 <%- include ('partials/footer.ejs') %>
 
 
