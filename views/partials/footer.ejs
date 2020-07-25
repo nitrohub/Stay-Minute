@@ -15,12 +15,14 @@
 
 <script>
 var active = 0;
-for (var i = 0; i < document.links.length; i++) {
-    if (document.links[i].href === document.URL) {
+for (var i = 1; i <= document.links.length; i++) {
+    if (document.links[i-1].href === document.URL) {
         active = i;
     }
 }
-document.links[active].style.color = "#FFFFFF";
+if(active!=0){
+    document.links[active-1].style.color = "#FFFFFF";
+}
 function high(){
     document.getElementById("fornav").css("color","#ffffff");
 }
