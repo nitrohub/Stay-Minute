@@ -6,46 +6,54 @@
   </ul>
 <div class="container">
   <center>
-  <!-- <form action="/search" method = "POST" class="frm1"> -->
     <div class="frm1">
       <div class="form-group input-group">
-        <input class="form-control" type = "text" name = "city" placeholder="Location" id="input">
+        <input class="form-control" type = "search" name = "city" placeholder="Location" id="input">
         <div class="form-group">
           <button class="butnAjax form-control button" id="butn"><i class="fa fa-search" aria-hidden="true"></i> search</button>
         </div>
       </div>
     </div>
- 
-        <div>
-        <img src="" id="response">
-        </div>
-  
 
-
+      <div id="form" class="form-inline">
+        <% if(typeof hotels !== "undefined"){ %>
+          <% hotels.forEach(function(hotel){ %>
+            <div>
+              <a href="/hotelDetails/<%=hotel._id %>">
+              <div><img id="img" src="<%= hotel.image %>" alt="hotel image"/></div>
+              <h5><%= hotel.name %> </h5></a>
+            </div>
+          <% }) %>
+    <% }else{  %>
+    <h1>No Hotels</h1>
+    <% } %>
+      </div>
   </center>
 </div>
 <script>
-  // 
-  var data;
-  document.querySelector(".butnAjax").addEventListener("click",function(){
-      console.log("button Clicked");
-      console.log(document.querySelector("input[name='city']").value);
-      fetch("/search",{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json'
-        },
-        body: JSON.stringify({city:(document.querySelector("input[name='city']").value)})
-      }).then(function(response){
-       return response.json();
-      }).then(function(response){
-            // console.log(response);
-            document.querySelector("#response").src=response[0].image;
-      }).catch(function(){
-        console.log("Error!");
-      })
-  })
-  
+    $(".butnAjax").click(function(){
+      $("#form").empty();
+          console.log($("input[name='city']").val());
+          var data = {};
+					data.city = $("input[name='city']").val();
+        $.ajax({
+          url:"/search",
+          type : "post",
+          contentType: 'application/json',
+          data : JSON.stringify(data)
+        }).done(function(response){
+            //  console.log(response[0]._id);
+            response.forEach(function(hotel){
+              // console.log("Id="+hotel._id);    
+            $("#form").append('<a id="a" href="/hotelDetails/'+hotel._id+'"><div><img id="img" src='+hotel.image+'alt='+hotel.name+'><h5>'+hotel.name+'</h5></div></a>');
+            })
+        }).fail(function(){
+          console.log("Not done!");
+        })
+    });
+
+
+
 </script>
 <%- include ('partials/footer.ejs') %>
 

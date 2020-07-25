@@ -6,22 +6,26 @@ var comment = require("../models/comment");
 var middleware    = require("../middleware/index");
 
 router.post("/search",function(req,res){
+   
     var city = req.body.city.toLowerCase();
-      //  console.log("Inside Search");
-
-      // console.log(req.body);
-      admin.find({city:city},function(err,hotels){
+    var data;
+    if(!city){
+      console.log("undd");
+      data={};
+    }else{
+       data={
+          city:city
+       }
+    }
+       
+      admin.find(data,function(err,hotels){
              if(err){
                 console.log("Error in finding the hotels");
-             }else{
-                console.log("Hotel found="+hotels);
-               //  res.render("showHotel",{hotels:hotels});
-               res.send(hotels);
+             }else{  
+               //  console.log(hotels);    
+                 res.json(hotels);
              }
           })
-      
-
-
  });
  
  router.get("/hotelDetails/:id",function(req,res){
@@ -33,7 +37,6 @@ router.post("/search",function(req,res){
          res.render("hotelDetails",{hotel:foundHotel});
       }
     });
-    // res.render("hotelDetails");
  });
  
  

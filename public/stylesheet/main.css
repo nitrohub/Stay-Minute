@@ -8,6 +8,9 @@
     margin:50px;
 }
 
+#a{
+    color:#2dc997;
+}
 
 input[type="submit"]:hover{
   background-color : #FFFFFF;
@@ -30,7 +33,7 @@ input[type="submit"]{
     color : #FFFFFF
 }
 
-input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus,input[type="email"]:focus,input[type="datetime-local"]:focus{
+input[type="text"]:focus,input[type="password"]:focus,input[type="number"]:focus,input[type="email"]:focus,input[type="datetime-local"]:focus,input[type="search"]:focus{
     border-color: #2dc997;
     box-shadow:0 0 5px #2dc997;
     
@@ -69,4 +72,15 @@ background-color: #666666;
 #del:focus{
     border-color: #666666;
     box-shadow:0 0 5px #666666
+}
+
+#img{
+    height: 230px;
+    width : 230px;
+    margin : 20px;
+    border-radius : 10px;
+}
+
+#img:hover{
+    box-shadow:0 0 10px #2dc997;
 }
