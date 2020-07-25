@@ -48,14 +48,14 @@
             <% if(currentUser){  %>
             <div class="img-thumbnail" style="margin-top:100px">
             
-                    <form method="post" action="/comment/<%=hotel._id %>">
+                    
                         <div class="form-group">
-                            <textArea name="comment" placeholder="Comment" class="form-control" id="foc"></textArea>
+                            <textArea name="comment" placeholder="Comment" class="form-control" required id="foc"></textArea>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Comment" class="form-control"/>
+                            <input type="submit" value="Comment" id="cmt" class="form-control"/>
                         </div>
-                    </form>
+                    
             </div>
             <% } %>
         </div>
@@ -67,6 +67,7 @@
                 <div><p style="text-indent: 40px;">    <%=hotel.description %></p></div>
             </div>
 
+            <div id="appendComment">
             <% hotel.comment.forEach(function(comment){ %>
             <div class="card card-body bg-light" style="margin:10px 0px">
                     <blockquote><%= comment.Comment %></blockquote>
@@ -84,9 +85,9 @@
                         </div>
                         <%}%>
                      <% }  %>
-                <% }); %>
             </div>
-
+            <% }); %>
+        </div>
         </div>
     </div>
     <div>    
@@ -109,6 +110,31 @@
     
         document.getElementById("app").innerHTML = amount;
 }
+
+$("#cmt").click(function(e){
+       e.preventDefault();
+       if($("#foc").val()!==""){
+
+        var data = {
+               comment:$("#foc").val()
+        };
+    $.ajax({
+        url : "/comment/<%=hotel._id %>",
+        type : 'post',
+        data : JSON.stringify(data),
+        contentType : 'application/json'
+    }).done(function(data){
+        // console.log(data);
+        
+            $("#appendComment").append('<div class="card card-body bg-light" style="margin:10px 0px"><blockquote>'+data.Comment+'</blockquote><div style="text-align: right;" class="credit"><cite>-'+data.Author.name+'</cite></div><div class="form-inline"><form action="/hotel/<%=hotel._id%>/comment/'+data._id+'/edit" method="get"><input type="submit" value="Edit" class="btn" style="margin-right: 5px;"></form><form id="delete-form" action="/hotel/<%=hotel._id%>/comment/'+data._id+'?_method=DELETE" method="POST"><button class="btn" id="del">Delete</button></form></div></div>');
+        
+    }).fail(function(){
+        console.log("Request failed!");
+    })
+
+       }
+})
+
 
 </script>
 

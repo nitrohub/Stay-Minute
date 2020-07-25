@@ -22,8 +22,8 @@ router.get("/hotel/:id/comment/:cid/edit",function(req,res){
  });
  
 router.post("/comment/:id",function(req,res){
-
-    admin.findById(req.params.id,function(err,foundadmin){
+            
+         admin.findById(req.params.id,function(err,foundadmin){
           if(err){
              console.log(err);
           }else{
@@ -31,13 +31,12 @@ router.post("/comment/:id",function(req,res){
                 if(err){
                    console.log(err);
                 }else{
-                  //  comment.Author.id=req.user._id;
-                  //  comment.Author.name=req.user.name;
-                  //  comment.save();
+                   console.log(comment);
                    foundadmin.comment.push(comment);
                    foundadmin.save();
                    console.log("Commented Successfully!");
-                   res.redirect("/hotelDetails/"+req.params.id);
+                  //  res.redirect("/hotelDetails/"+req.params.id);
+                  res.json(comment);
                 }
           })
  
