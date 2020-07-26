@@ -96,7 +96,14 @@
 
 </div>
 <script>
-    function Amount(){
+
+window.history.forward(); 
+        function noBack() { 
+            window.history.forward(); 
+        } 
+
+
+   function Amount(){
     var nos = document.getElementById("no").value;
     var types = document.getElementsByName("roomType")[0].value;
     var amount="";
@@ -112,7 +119,7 @@
 }
 
 $("#cmt").click(function(e){
-    //    e.preventDefault();
+    
        if($("#foc").val()!==""){
         var data = {
                comment:$("#foc").val()

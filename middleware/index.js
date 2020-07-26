@@ -8,4 +8,12 @@ middlewareObj.isLoggedIn = function(req,res,next){
     }
 }
 
+middlewareObj.Authenticate = function(req,res,next){
+        if(req.isAuthenticated()){
+            res.redirect("/index");
+        }else{
+            return next();
+        }    
+}
+
 module.exports = middlewareObj;

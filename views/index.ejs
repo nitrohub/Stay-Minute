@@ -31,6 +31,13 @@
   </center>
 </div>
 <script>
+
+
+window.history.forward(); 
+        function noBack() { 
+            window.history.forward(); 
+        } 
+
     $(".butnAjax").click(function(){
       $("#form").empty();
           console.log($("input[name='city']").val());
@@ -42,9 +49,7 @@
           contentType: 'application/json',
           data : JSON.stringify(data)
         }).done(function(response){
-            //  console.log(response[0]._id);
             response.forEach(function(hotel){
-              // console.log("Id="+hotel._id);    
             $("#form").append('<a id="a" href="/hotelDetails/'+hotel._id+'"><div><img id="img" src='+hotel.image+'alt='+hotel.name+'><h5>'+hotel.name+'</h5></div></a>');
             })
         }).fail(function(){

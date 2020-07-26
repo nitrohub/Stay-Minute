@@ -9,6 +9,7 @@ var comment = require("./models/comment");
 var admin = require("./models/Hoteladmin");  //importing the schema
 var user = require("./models/user");  //Contains the Schema of user
 var localStrategy = require("passport-local").Strategy;
+var flash      = require("connect-flash");
 // var ejsLint = require('ejs-lint');
 var userRoutes = require("./routes/user"),
     commentRoutes = require("./routes/comments"),
@@ -17,6 +18,7 @@ var userRoutes = require("./routes/user"),
 
 var app = express();
 mongoose.connect("mongodb://localhost/StayMinute");
+app.use(flash());
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json());
@@ -35,6 +37,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req,res,next){  //to use currentUser directly without passing any argument to the ejs files
    res.locals.currentUser = req.user;
+   res.locals.error       = req.flash("error");
+   res.locals.success     = req.flash("success");
    next();
 })
 

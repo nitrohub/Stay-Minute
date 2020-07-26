@@ -3,10 +3,11 @@ var router  = express.Router();
 var user    = require("../models/comment");
 var admin   = require("../models/Hoteladmin");
 var comment = require("../models/comment");
+var middleware = require("../middleware/index");
 
 //Route you get when you want to comment on the hotel
  
-router.get("/hotel/:id/comment/:cid/edit",function(req,res){
+router.get("/hotel/:id/comment/:cid/edit",middleware.isLoggedIn,function(req,res){
     console.log("The comment to be edited = "+req.params.cid);
     comment.findById(req.params.cid,function(err,comment){
        if(err){
@@ -21,8 +22,9 @@ router.get("/hotel/:id/comment/:cid/edit",function(req,res){
     });
  });
  
-router.post("/comment/:id",function(req,res){
-            
+router.post("/comment/:id",middleware.isLoggedIn,function(req,res){
+
+            console.log("Inside Comment!");
          admin.findById(req.params.id,function(err,foundadmin){
           if(err){
              console.log(err);
@@ -45,7 +47,7 @@ router.post("/comment/:id",function(req,res){
     });
  });
  
-router.put("/hotel/:id/comment/:cid",function(req,res){
+router.put("/hotel/:id/comment/:cid",middleware.isLoggedIn,function(req,res){
 
       console.log("Edited="+req.body.comment);
      comment.findByIdAndUpdate(req.params.cid,{Comment:req.body.comment},function(err,updated){
@@ -58,7 +60,7 @@ router.put("/hotel/:id/comment/:cid",function(req,res){
      });
  });
  
-router.delete("/hotel/:id/comment/:cid",function(req,res){
+router.delete("/hotel/:id/comment/:cid",middleware.isLoggedIn,function(req,res){
      comment.findByIdAndRemove(req.params.cid,function(err){
          if(err){
             console.log(err);
