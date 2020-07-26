@@ -91,7 +91,13 @@ app.get("/index",(req,res)=>{
          console.log(err);
       }else{
          // console.log(hotels);
-         res.render("index",{hotels:hotels});
+         if(req.isAuthenticated()){
+            req.flash("success","Welcome "+req.user.name);
+            res.render("index",{hotels:hotels, message: req.flash("success") });
+         }else{
+            res.render("index",{hotels:hotels});
+         }
+         
       }
    })
 });

@@ -55,6 +55,7 @@ router.put("/hotel/:id/comment/:cid",middleware.isLoggedIn,function(req,res){
             console.log(err);
         }else{
             console.log("Updated="+updated);
+            req.flash("success","Comment edited successfully");
             res.redirect("/hotelDetails/"+req.params.id);
         }
      });
@@ -65,6 +66,7 @@ router.delete("/hotel/:id/comment/:cid",middleware.isLoggedIn,function(req,res){
          if(err){
             console.log(err);
          }else{
+            req.flash("success","Comment deleted successfully");
             res.redirect("/hotelDetails/"+req.params.id);
          }
      });

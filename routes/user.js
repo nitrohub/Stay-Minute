@@ -8,19 +8,11 @@ var middleware    = require("../middleware/index");
 var localStrategy = require("passport-local").Strategy;
 
 router.get("/signup",middleware.Authenticate,function(req,res){  //go to signup page
-   // if(req.isAuthenticated()){
-   //    res.redirect("/index");  
-   // }else{
       res.render("signup");
-   // }
  });
 
  router.get("/login",middleware.Authenticate,function(req,res){   //render login if asked to login
-   // if(req.isAuthenticated()){
-   //    res.redirect("/index");
-   // }else{
       res.render("login");
-   // } 
  });
  
  router.post("/signup",function(req,res){  //Working
@@ -51,12 +43,13 @@ router.get("/signup",middleware.Authenticate,function(req,res){  //go to signup 
                if(err){
                   console.log(err);
                }
+               req.flash("success","Registered successfully!");
                return res.redirect("/index");
             })
               }
           });
            }else{
-              console.log("User="+found+" already exists");
+              req.flash("error","User already exists!");
               res.redirect("/login");
            }
          }
@@ -66,26 +59,15 @@ router.get("/signup",middleware.Authenticate,function(req,res){  //go to signup 
   
   router.post("/login",passport.authenticate("user",{  //User login
     successRedirect :"/index",  
-    failureRedirect : "/login"
+    failureRedirect : "/login",
+    failureFlash: true,
   }),function(req,res){
   });
  
   router.get("/logout",function(req,res){
     req.logout();
-
-    if (req.session) {
-      req.session.destroy(function (err) {
-        if (err) {
-          console.log(err)
-        }else{
-         console.log("Destroyed the user session on Auth0 endpoint");
-         res.clearCookie('duoshuo_token');
-         res.redirect("/index");
-        }       
-      });
-    }else{
+    req.flash("success","Logged out successfully!");
       res.redirect("/index");
-    }
   });
 
  

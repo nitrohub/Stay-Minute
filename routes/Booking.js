@@ -46,7 +46,6 @@ router.post("/search",function(req,res){
        if(err){
           console.log(err);
        }else{
-          
           var count = 0;
           console.log("Count before searching="+count);
           
@@ -128,9 +127,14 @@ router.post("/search",function(req,res){
                 // console.log("FromDate before Booking="+fromDate);
                 // console.log("ToDate before Booking="+toDate);
                 booking(fromDate,toDate);
-                   res.send("Rooms Reserved Successfully!");
+                  //  res.send("Rooms Reserved Successfully!");
+                  req.flash("success","Booking Successful!");
+                  res.redirect("/index");
             }else{
-                  res.send("only "+count+" rooms are left");            
+
+                  // res.send("only "+count+" rooms are left");
+                  req.flash("error","only "+count+" "+req.body.roomType+" rooms are left");            
+                  res.redirect("/hotelDetails/"+req.params.id);
             } 
        }
     })
