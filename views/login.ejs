@@ -5,18 +5,49 @@
                         <h1>Login</h1>
                         <form method = "POST" action="/login">
                                 <div class="form-group">
-                                        <input type="text"name="username" placeholder="username" class="form-control">
+                                        <input type="text"name="username" placeholder="username" class="form-control" id="username" required>
+                                        <span id="email"></span>
                                 </div>
                                 <div class="form-group">
-                                        <input type="password" name="password" placeholder ="password" class="form-control">            
+                                        <input type="password" name="password" placeholder ="password" class="form-control" id="pwd" required>            
+                                        <span id="password"></span>
                                 </div>
                                 <div class="form-group">
-                                        
                                         <button class="form-control button" id="butn"><i class="fa fa-sign-in" aria-hidden="true"></i>Login</button>
                                 </div>
                         </form>
                 </div>
                 </center>
         </div>
+
+<script>
+        $("#username").blur(function(){
+                var username = $("#username").val(); 
+                var length = $("#username").val().length;
+                var pattern = "^[a-zA-Z0-9_\\.\\+\\-%]{1,}@[A-Za-z0-9\\._]{2,}\.[a-zA-z]{2,}$";
+                var patt = new RegExp(pattern);
+                var res = patt.test(username);
+                if(res){
+                        $("#email").empty();
+                }else{
+                        $("#email").html("<div style='color:red'>Please Enter proper email Id</div>");
+                }
+                
+        })
+
+        $("#pwd").blur(function(){
+                var password = $("#pwd").val();               
+                        pattern= "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\\$%\\^\\*]).{8,}";
+                        var patt = new RegExp(pattern);
+                        var res =  patt.test(password);
+                        if(!res){
+                        $("#password").html("<div style='color:red'>Password must contain an uppercase,lowercase character and numbers as well as special characters and 8 or more characters</div>");
+                        }else{
+                                $("#password").empty();
+                        }
+                
+        })
+</script>
+        
         
 <%- include ('partials/footer.ejs') %>
