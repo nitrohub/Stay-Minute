@@ -1,3 +1,6 @@
+
+
+
 <%-include('partials/header.ejs') %>
 <div class="container">
     <div class="jumbotron h1" style="margin-top:50px; text-align: center; background-color: #666666; color:#2dc997"><b>HOTEL DETAILS</b></div>
@@ -101,7 +104,7 @@
 <script>
 
 window.history.forward(); 
-        function noBack() { 
+        function noBack(){ 
             window.history.forward(); 
         } 
    function Amount(){
@@ -111,17 +114,15 @@ window.history.forward();
     var from = document.querySelector("#from").value;
     var to = document.querySelector("#to").value;
 
+    // console.log("From="+from);
+    // console.log("To="+to);
+
     if(from!=="" && to!==""){
-
-
-
-
-
-
 
 var fromDate = parseInt( from.substring(0,4) + from.substring(5,7) + from.substring(8,10) + from.substring(11,13) + from.substring(14,16));
     var toDate   = parseInt( to.substring(0,4) + to.substring(5,7) + to.substring(8,10) + to.substring(11,13) + to.substring(14,16));
     var flag=1;
+    console.log("Difference="+(toDate-fromDate));
     if(toDate-fromDate<30){
         console.log("You will have to book the room for at least 30 minutes");
         flag=0;
@@ -148,7 +149,7 @@ var fromDate = parseInt( from.substring(0,4) + from.substring(5,7) + from.substr
         // console.log("Minutes duration="+(toMinutes-fromMinutes));
         minutesDuration = toMinutes-fromMinutes;
     }else{
-            toHours-=1;
+            toHour-=1;
             toMinutes+=60;
             // console.log("Minutes duration="+(toMinutes-fromMinutes));
             minutesDuration = toMinutes-fromMinutes;
@@ -283,17 +284,6 @@ var fromDate = parseInt( from.substring(0,4) + from.substring(5,7) + from.substr
         }
     }
 
-    
-    // if(toYear-fromYear<=1){
-    //     if(toYear-fromYear==1){
-    //         if(months)
-    //     }
-    // }else{
-    //     console.log("Invalid year entry!");
-    // }
-    
-    // console.log("From Date="+fromDate);
-   
     // if(types.localeCompare("Simple")==0){
     //     var from = document.querySelector("#from").value;
     //     var to = document.querySelector("#to").value;
@@ -305,7 +295,7 @@ var fromDate = parseInt( from.substring(0,4) + from.substring(5,7) + from.substr
     //     amount = parseInt(nos) * parseInt("<%=hotel.cost_of_superDeluxe_room%>");
     // }
     
-        // document.getElementById("app").innerHTML = amount;
+    // document.getElementById("app").innerHTML = amount;
 
 
             if(flag==1){
@@ -315,10 +305,6 @@ var fromDate = parseInt( from.substring(0,4) + from.substring(5,7) + from.substr
                 console.log("Months Duration="+monthsDuration);
             }
     }
-
-
-
-
 
     }
 }
