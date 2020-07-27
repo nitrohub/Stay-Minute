@@ -12,20 +12,20 @@
                         Cost for 30 Minutes
                     </li>
                     <li class="list-group-item">
-                    Simple Room<span class="fa-pull-right"><i class="fa fa-inr" aria-hidden="true"></i><%=hotel.cost_of_simple_room%></span>
+                    Simple Room<span class="fa-pull-right" ><i class="fa fa-inr" aria-hidden="true"></i><span id="simpleRoom"><%=hotel.cost_of_simple_room%></span></span>
                     </li>
                     <li class="list-group-item">
-                        Deluxe Room Cost<span class="fa-pull-right"><i class="fa fa-inr" aria-hidden="true"></i><%=hotel.cost_of_deluxe_room%></span>
+                        Deluxe Room Cost<span class="fa-pull-right" ><i class="fa fa-inr" aria-hidden="true"></i><span id="deluxeRoom"><%=hotel.cost_of_deluxe_room%></span></span>
                     </li>
                     <li class="list-group-item">
-                        Super Deluxe Room Cost<span class="fa-pull-right"><i class="fa fa-inr" aria-hidden="true"></i><%=hotel.cost_of_superDeluxe_room%></span>
+                        Super Deluxe Room Cost<span class="fa-pull-right"><i class="fa fa-inr" aria-hidden="true"></i><span id="superDeluxeRoom"><%=hotel.cost_of_superDeluxe_room%></span></span>
                     </li>
                 </ul>
             </div>
             <div style="margin-top: 100px;" class="img-thumbnail">
                 <form action="/checkAvailability/<%=hotel._id%>" method="POST">
                         <div class="form-group">
-                            <input type="text" name="roomType" list="items" placeholder="Room Type" class="form-control" required>
+                            <input type="text" id="RoomTypeSelection" name="roomType" list="items" placeholder="Room Type" class="form-control" required>
                             <datalist id="items">
                                 <option value="Simple"></option>
                                 <option value="Deluxe"></option>
@@ -33,7 +33,7 @@
                             </datalist>
                         </div>
                         <div class="form-group">
-                            <input type="number" placeholder="Number of Rooms" name="No_of_room" id="no" class="form-control" required>
+                            <input type="number" placeholder="Number of Rooms" name="No_of_room" id="no" class="form-control" min="1" required>
                         </div>
                         
                         <div class="form-group form-inline">
@@ -43,7 +43,7 @@
                             <input type="text" onfocus="(this.type='datetime-local')" name="to" placeholder="To" class="form-control" style="width:100%" id="to" required/>
                         </div>
                         <div class="form-group form-inline">
-                            <input type="text" class="form-control" value="Total Amount" onfocus="Amount()" id="total" name="total" readonly/>
+                            <input type="text" class="form-control" placeholder="Total Amount" onfocus="Amount()" id="total" name="total" readonly style="width:100%"/>
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Pay" class="form-control" />
@@ -101,311 +101,13 @@
     
 
 </div>
-<script>
+<script type="text/javascript" src="/js/AmountCalculation.js"></script>
 
+<script>
 window.history.forward(); 
         function noBack(){ 
             window.history.forward(); 
         } 
-   function Amount(){
-    var nos = document.getElementById("no").value;
-    var types = document.getElementsByName("roomType")[0].value;
-    var amount="";
-    var from = document.querySelector("#from").value;
-    var to = document.querySelector("#to").value;
-
-    console.log("From="+from);
-    console.log("To="+to);
-
-    if(from!=="" && to!==""){
-
-var fromDate = parseInt( from.substring(0,4) + from.substring(5,7) + from.substring(8,10) + from.substring(11,13) + from.substring(14,16));
-    var toDate   = parseInt( to.substring(0,4) + to.substring(5,7) + to.substring(8,10) + to.substring(11,13) + to.substring(14,16));
-    var flag=1;
-    
-    if(toDate-fromDate<30){
-        console.log("You will have to book the room for at least 30 minutes");
-        flag=0;
-    }else{
-
-    var fromYear = parseInt(from.substring(0,4));
-    var toYear   = parseInt(to.substring(0,4));
-
-    var fromMonth = parseInt(from.substring(5,7));
-    var toMonth = parseInt(to.substring(5,7));
-
-    var fromDay   = parseInt(from.substring(8,10));
-    var toDay     = parseInt(to.substring(8,10));
-
-    var fromHour  = parseInt(from.substring(11,13));
-    var toHour    = parseInt(to.substring(11,13));
-
-    var fromMinutes = parseInt(from.substring(14,16));
-    var toMinutes   = parseInt(to.substring(14,16));
-    
-    var minutesDuration,hoursDuration,daysDuration,monthsDuration;   
-   
-    if(toMinutes>=fromMinutes){
-        minutesDuration = toMinutes-fromMinutes;
-    }else{
-            toHour-=1;
-            toMinutes+=60;
-            minutesDuration = toMinutes-fromMinutes;
-    }
-
-    if(toHour>=fromHour){
-        hoursDuration = toHour-fromHour;
-    }else{
-            toDay-=1;
-            toHour+=24;
-            hoursDuration = toHour-fromHour;
-    }
-
-    if(toDay>=fromDay){
-        daysDuration=toDay-fromDay;
-    }else{
-            if(toMonth==1){
-                toMonth-=1;
-                toDay+=31;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==2){
-                if(toYear%400==0){
-                toMonth-=1;
-                toDay+=29;
-                daysDuration=toDay-fromDay;
-                }else if((toYear%4==0) && (toYear%100!=0)){
-                toMonth-=1;
-                toDay+=29;
-                daysDuration=toDay-fromDay;
-                }else{
-                toMonth-=1;
-                toDay+=28;
-                daysDuration=toDay-fromDay;
-                }
-            }else if(toMonth==3){
-                toMonth-=1;
-                toDay+=31;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==4){
-                toMonth-=1;
-                toDay+=30;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==5){
-                toMonth-=1;
-                toDay+=31;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==6){
-                toMonth-=1;
-                toDay+=30;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==7){
-                toMonth-=1;
-                toDay+=31;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==8){
-                toMonth-=1;
-                toDay+=31;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==9){
-                toMonth-=1;
-                toDay+=30;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==10){
-                toMonth-=1;
-                toDay+=31;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==11){
-                toMonth-=1;
-                toDay+=30;
-                daysDuration=toDay-fromDay;
-            }else if(toMonth==12){
-                toMonth-=1;
-                toDay+=31;
-                daysDuration=toDay-fromDay;
-            }
-    }if(toMonth>=fromMonth){
-        if(toMonth-fromMonth==1){
-            if(((daysDuration==0) && (hoursDuration==0)) && (minutesDuration==0) && (toYear-fromYear==0)){
-                monthsDuration=1;
-            }else{
-                console.log("Sorry we are not permitted to serve you for more than a month continuously");
-                flag=0;
-                minutesDuration=0;
-                hoursDuration=0;
-                daysDuration=0;
-                monthsDuration=0; 
-            }
-        }else if(toMonth-fromMonth==0){
-                if(toYear>fromYear){
-                    console.log("Sorry we are not permitted to serve you for more than a month continuously");
-                        flag=0;
-                }else{
-                    monthsDuration = 0;
-                }
-            }else{  //Greater than 1
-                console.log("Sorry we are not permitted to serve you for more than a month continuously");
-                flag=0;
-                minutesDuration=0;
-                hoursDuration=0;
-                daysDuration=0;
-                monthsDuration=0;
-
-            }
-    }else{  //toMonth<fromMonth and toyear>fromyear
-        console.log("Month Less");
-        if(toYear-fromYear==1){
-            console.log("to-from=1");
-            if((toMonth==1) && (fromMonth==12)){
-                console.log("to=1 and from=12");
-                if(((minutesDuration==0) && (hoursDuration==0)) && (daysDuration==0)){
-                    console.log("Yes");
-                    monthsDuration=1;
-                }else{
-                    console.log("Sorry we are not permitted to serve you for more than a month continuously");
-                    flag=0;
-                    minutesDuration=0;
-                    hoursDuration=0;
-                    daysDuration=0;
-                    monthsDuration=0;
-                }
-            }else if( (toMonth==0) && (fromMonth==12) ){
-                monthsDuration=0;
-            }else{  //for any other months in which to<from wont work
-                console.log("Sorry we are not permitted to serve you for more than a month continuously");
-                flag=0;
-            }
-        }else{  //Since we are entering here only if the toyear is greater than fromyear therefore this condition would only be checked only if the year difference is greater than 1
-                console.log("Sorry we are not permitted to serve you for more than a month continuously");
-                flag=0;
-                minutesDuration=0;
-                hoursDuration=0;
-                daysDuration=0;
-                monthsDuration=0;
-        }
-    }
-
-    if(flag==1){
-                console.log("Minutes Duration="+minutesDuration);
-                console.log("Hours Duration="+hoursDuration);
-                console.log("Days Duration="+daysDuration);
-                console.log("Months Duration="+monthsDuration);
-
-
-                    
-                var totalStayAmount;
-                
-                if(types.localeCompare("Simple")==0){
-
-                    var cost_of_half_hour = "<%=hotel.cost_of_simple_room%>";
-                    var cost_of_an_hour   = 2*"<%=hotel.cost_of_simple_room%>";
-                    var cost_of_a_day     = cost_of_an_hour*24;
-
-                    console.log("Cost of half hour="+cost_of_half_hour);
-                    console.log("Cost of an hour="+cost_of_an_hour);
-                    console.log("Cost of a day="+cost_of_a_day);
-
-                    totalStayAmount = cost_of_half_hour*Math.ceil(minutesDuration/30);
-                    totalStayAmount += cost_of_an_hour*hoursDuration;
-                    totalStayAmount += cost_of_a_day*daysDuration;
-                    if(monthsDuration==1){
-                        if(toMonth==1 || toMonth==3 ||toMonth==5 || toMonth==7 || toMonth==8 || toMonth==10 || toMonth==12){
-                                totalStayAmount += cost_of_a_day*31;
-                        }else if(toMonth==4 || toMonth==6 || toMonth==9 || toMonth==11){
-                                totalStayAmount += cost_of_a_day*30;
-                        }else if(toMonth==2){
-                             if(leapYear(toYear)){
-                                 totalStayAmount+=cost_of_a_day*29;
-                             }else{
-                                 totalStayAmount+=cost_of_a_day*28;
-                             }
-                        }
-                    }
-                    
-                    totalStayAmount=totalStayAmount*parseInt(nos);  //total amount * no_of_rooms
-                    
-                }else if(types.localeCompare("Deluxe")==0){
-                    var cost_of_half_hour = "<%=hotel.cost_of_deluxe_room%>";
-                    var cost_of_an_hour   = 2*cost_of_half_hour;
-                    var cost_of_a_day     = cost_of_an_hour*24;
-
-                    console.log("Cost of half hour="+cost_of_half_hour);
-                    console.log("Cost of an hour="+cost_of_an_hour);
-                    console.log("Cost of a day="+cost_of_a_day);
-                    
-                    totalStayAmount = cost_of_half_hour*Math.ceil(minutesDuration/30);
-                    totalStayAmount += cost_of_an_hour*hoursDuration;
-                    totalStayAmount += cost_of_a_day*daysDuration;
-                    if(monthsDuration==1){
-                        if(toMonth==1 || toMonth==3 ||toMonth==5 || toMonth==7 || toMonth==8 || toMonth==10 || toMonth==12){
-                                totalStayAmount += cost_of_a_day*31;
-                        }else if(toMonth==4 || toMonth==6 || toMonth==9 || toMonth==11){
-                                totalStayAmount += cost_of_a_day*30;
-                        }else if(toMonth==2){
-                             if(leapYear(toYear)){
-                                 totalStayAmount+=cost_of_a_day*29;
-                             }else{
-                                 totalStayAmount+=cost_of_a_day*28;
-                             }
-                        }
-                    }
-                    
-                    totalStayAmount=totalStayAmount*parseInt(nos);
-                }else if(types.localeCompare("Super Deluxe")==0){
-            
-                    var cost_of_half_hour = "<%=hotel.cost_of_superDeluxe_room%>";
-                    var cost_of_an_hour   = 2*cost_of_half_hour;
-                    var cost_of_a_day     = cost_of_an_hour*24;
-
-                    console.log("Cost of half hour="+cost_of_half_hour);
-                    console.log("Cost of an hour="+cost_of_an_hour);
-                    console.log("Cost of a day="+cost_of_a_day);
-                    
-                    totalStayAmount = cost_of_half_hour*Math.ceil(minutesDuration/30);
-                    totalStayAmount += cost_of_an_hour*hoursDuration;
-                    totalStayAmount += cost_of_a_day*daysDuration;
-                    if(monthsDuration==1){
-                        if(toMonth==1 || toMonth==3 ||toMonth==5 || toMonth==7 || toMonth==8 || toMonth==10 || toMonth==12){
-                                totalStayAmount += cost_of_a_day*31;
-                        }else if(toMonth==4 || toMonth==6 || toMonth==9 || toMonth==11){
-                                totalStayAmount += cost_of_a_day*30;
-                        }else if(toMonth==2){
-                             if(leapYear(toYear)){
-                                 totalStayAmount+=cost_of_a_day*29;
-                             }else{
-                                 totalStayAmount+=cost_of_a_day*28;
-                             }
-                        }
-                    }
-                    
-                    totalStayAmount=totalStayAmount*parseInt(nos);
-                }
-                
-                console.log("Total Stay Amount="+totalStayAmount);
-                $("#total").val(totalStayAmount);
-
-
-
-            }
-
-    
-
-
-            
-    }
-
-    }
-}
-
-function leapYear(year){
-    if(year%400==0){
-        return true;
-    }else if((year%4==0) && ((year%100)!=0)){
-        return true;
-    }else{
-        return false;
-    }
-}
-
 
 $("#cmt").click(function(e){
     
