@@ -146,106 +146,94 @@ var fromDate = parseInt( from.substring(0,4) + from.substring(5,7) + from.substr
     var minutesDuration,hoursDuration,daysDuration,monthsDuration;   
    
     if(toMinutes>=fromMinutes){
-        // console.log("Minutes duration="+(toMinutes-fromMinutes));
         minutesDuration = toMinutes-fromMinutes;
     }else{
             toHour-=1;
             toMinutes+=60;
-            // console.log("Minutes duration="+(toMinutes-fromMinutes));
             minutesDuration = toMinutes-fromMinutes;
     }
 
     if(toHour>=fromHour){
-        // console.log("Hours duration="+(toHour-fromHour));
         hoursDuration = toHour-fromHour;
     }else{
             toDay-=1;
             toHour+=24;
-            // console.log("Hours duration="+(toHour-fromHour));
             hoursDuration = toHour-fromHour;
     }
 
     if(toDay>=fromDay){
-        // console.log("Day duration="+(toDay-fromDay));
         daysDuration=toDay-fromDay;
     }else{
             if(toMonth==1){
                 toMonth-=1;
                 toDay+=31;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==2){
                 if(toYear%400){
                 toMonth-=1;
                 toDay+=29;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
                 }else if(toYear%4==0 && toYear%100!=0){
                 toMonth-=1;
                 toDay+=29;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
                 }else{
                 toMonth-=1;
                 toDay+=28;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
                 }
             }else if(toMonth==3){
                 toMonth-=1;
                 toDay+=31;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==4){
                 toMonth-=1;
                 toDay+=30;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==5){
                 toMonth-=1;
                 toDay+=31;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==6){
                 toMonth-=1;
                 toDay+=30;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==7){
                 toMonth-=1;
                 toDay+=31;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==8){
                 toMonth-=1;
                 toDay+=31;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==9){
                 toMonth-=1;
                 toDay+=30;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==10){
                 toMonth-=1;
                 toDay+=31;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==11){
                 toMonth-=1;
                 toDay+=30;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }else if(toMonth==12){
                 toMonth-=1;
                 toDay+=31;
-                // console.log("Number of Days="+(toDay-fromDay));
                 daysDuration=toDay-fromDay;
             }
     }if(toMonth>=fromMonth){
         if(toMonth-fromMonth==1){
-            if(((daysDuration==0) && (hoursDuration==0)) && (minutesDuration==0)){
+            if(((daysDuration==0) && (hoursDuration==0)) && (minutesDuration==0) && (toYear-fromYear==0)){
                 monthsDuration=1;
+            }else{
+                console.log("Sorry we are not permitted to serve you for more than a month continuously");
+                flag=0;
+                minutesDuration=0;
+                hoursDuration=0;
+                daysDuration=0;
+                monthsDuration=0; 
             }
         }else if(toMonth-fromMonth==0){
                 monthsDuration = 0;
