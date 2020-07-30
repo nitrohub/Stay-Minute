@@ -39,3 +39,5 @@
 - ```mongod```
 
 - ```node app.js```
+---
+> Internship project by RIDL labs.
