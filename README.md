@@ -40,4 +40,4 @@
 
 - ```node app.js```
 ---
-> Internship project by RIDL labs.
+> Internship project for RIIDL labs.
